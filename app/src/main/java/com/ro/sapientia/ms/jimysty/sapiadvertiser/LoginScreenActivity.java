@@ -169,7 +169,7 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent mainIntent = new Intent(LoginScreenActivity.this,AboutAdvertisement.class);
+                            Intent mainIntent = new Intent(LoginScreenActivity.this,Advertisements.class);
                             LoginScreenActivity.this.startActivity(mainIntent);
                         } else {
                             Toast.makeText(LoginScreenActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
