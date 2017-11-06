@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Sapi advertiser</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+
+    <string name="facebook_app_id">[APP_ID]</string>
+    <string name="fb_login_protocol_scheme">fb[APP_ID]</string>
+</resources>
