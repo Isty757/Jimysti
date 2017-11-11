@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@color/colorWhite"
     android:layout_height="match_parent"
-    tools:context="com.ro.sapientia.ms.jimysty.sapiadvertiser.SplashScreen">
+    tools:context="com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.SplashScreen">
 
     <ImageView
         android:layout_width="wrap_content"

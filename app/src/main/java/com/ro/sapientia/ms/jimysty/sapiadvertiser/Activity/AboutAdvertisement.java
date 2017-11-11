@@ -1,11 +1,15 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.ViewPagerAdapter;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
 /**
  * Created by Drako on 30-Oct-17.
@@ -37,8 +41,9 @@ public class AboutAdvertisement extends BasicActivity {
         tmpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mainIntent = new Intent(AboutAdvertisement.this,NewAdvertisement.class);
-                AboutAdvertisement.this.startActivity(mainIntent);
+                //Intent mainIntent = new Intent(AboutAdvertisement.this,NewAdvertisement.class);
+                //AboutAdvertisement.this.startActivity(mainIntent);
+                StaticMethods.goToCreateNewAdvertisementActivity(AboutAdvertisement.this);
             }
         });
     }

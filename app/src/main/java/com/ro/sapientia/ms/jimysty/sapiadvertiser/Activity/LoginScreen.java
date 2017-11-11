@@ -1,17 +1,12 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,12 +27,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
 /**
  * Created by Drako on 30-Oct-17.
  */
 
-public class LoginScreenActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
@@ -131,14 +129,14 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
 
     private void login(){
 
-        EditText etEmail = (EditText) findViewById(R.id.et_email);
-        EditText etPassword = (EditText) findViewById(R.id.et_password);
+        EditText etEmail = findViewById(R.id.et_email);
+        EditText etPassword = findViewById(R.id.et_password);
 
         if (etPassword.getText().toString().length() <= 5){
-            Toast.makeText(LoginScreenActivity.this, "Password must contain min 6 character", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginScreen.this, "Password must contain min 6 character", Toast.LENGTH_SHORT).show();
         }
         if (etEmail.getText().toString().matches("") || etPassword.getText().toString().matches("")){
-            Toast.makeText(LoginScreenActivity.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginScreen.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
         }
         else {
             mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
@@ -146,11 +144,12 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginScreenActivity.this, "Authentication Success.", Toast.LENGTH_SHORT).show();
-                                Intent mainIntent = new Intent(LoginScreenActivity.this,AboutAdvertisement.class);
-                                LoginScreenActivity.this.startActivity(mainIntent);
+                                Toast.makeText(LoginScreen.this, "Authentication Success.", Toast.LENGTH_SHORT).show();
+                                //Intent mainIntent = new Intent(LoginScreen.this,AboutAdvertisement.class);
+                                //LoginScreen.this.startActivity(mainIntent);
+                                StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
                             } else {
-                                Toast.makeText(LoginScreenActivity.this, "Authentication failed22.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginScreen.this, "Authentication failed22.", Toast.LENGTH_SHORT).show();
                                 createUser();
                             }
                         }
@@ -160,8 +159,8 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
 
     private void createUser(){
 
-        EditText etEmail = (EditText) findViewById(R.id.et_email);
-        EditText etPassword = (EditText) findViewById(R.id.et_password);
+        EditText etEmail = findViewById(R.id.et_email);
+        EditText etPassword = findViewById(R.id.et_password);
 
         Log.d("LOGIN22", "createUserWithEmail:success");
         mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().trim(), etPassword.getText().toString().trim())
@@ -169,10 +168,11 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent mainIntent = new Intent(LoginScreenActivity.this,Advertisements.class);
-                            LoginScreenActivity.this.startActivity(mainIntent);
+                            //Intent mainIntent = new Intent(LoginScreen.this,AboutAdvertisement.class);
+                            //LoginScreen.this.startActivity(mainIntent);
+                            StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
                         } else {
-                            Toast.makeText(LoginScreenActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -203,12 +203,13 @@ public class LoginScreenActivity extends BasicActivity implements GoogleApiClien
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginScreenActivity.this, "Authentication with Google success.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "Authentication with Google success.",Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent mainIntent = new Intent(LoginScreenActivity.this,AboutAdvertisement.class);
-                            LoginScreenActivity.this.startActivity(mainIntent);
+                            //Intent mainIntent = new Intent(LoginScreen.this,Advertisements.class);
+                            //LoginScreen.this.startActivity(mainIntent);
+                            StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
                         } else {
-                            Toast.makeText(LoginScreenActivity.this, "Authentication with Google failed.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "Authentication with Google failed.",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -4,15 +4,24 @@
 
 
     <item
-        android:id="@+id/face"
+        android:id="@+id/item_face"
         android:icon="@drawable/index"
-        android:orderInCategory="101"
+        android:orderInCategory="102"
         android:title="@string/face_content"
         app:showAsAction="ifRoom">
     </item>
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/item_add"
+        android:icon="@drawable/search"
+        android:orderInCategory="101"
+        android:title="@string/search_content"
+        app:showAsAction="always">
+
+    </item>
+
+    <item
+        android:id="@+id/item_action_search"
         android:icon="@drawable/search"
         android:orderInCategory="100"
         android:title="@string/search_content"

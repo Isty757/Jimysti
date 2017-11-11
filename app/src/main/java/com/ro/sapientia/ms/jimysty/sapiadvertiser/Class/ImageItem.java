@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.Class;
 
 import android.graphics.Bitmap;
 

@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 /**
  * Created by Drako on 04-Nov-17.

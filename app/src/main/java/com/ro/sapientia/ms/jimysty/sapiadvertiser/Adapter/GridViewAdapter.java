@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.ImageItem;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 import java.util.ArrayList;
 
@@ -36,8 +39,8 @@ public class GridViewAdapter extends ArrayAdapter {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
-            holder.imageTitle = (TextView) row.findViewById(R.id.text);
-            holder.image = (ImageView) row.findViewById(R.id.image);
+            holder.imageTitle = row.findViewById(R.id.text);
+            holder.image = row.findViewById(R.id.image);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
