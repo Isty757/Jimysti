@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -41,6 +42,8 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
     private GoogleApiClient mGoogleApiClient;
     private final int RC_SIGN_IN = 11;
 
+    private boolean forgotPasswordField = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,17 +71,42 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
                 signInWithGoogle();
             }
         });
+        final EditText etEmail = findViewById(R.id.et_email);
+        final EditText etPassword = findViewById(R.id.et_password);
+        final TextView forgotPassword = findViewById(R.id.tv_forgotPassword);
 
         final Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                if (forgotPasswordField){
+                    etPassword.setVisibility(View.VISIBLE);
+                    googleSignInButton.setVisibility(View.VISIBLE);
+                    forgotPassword.setVisibility(View.VISIBLE);
+                    loginButton.setText("Login");
+                    forgotPasswordField = false;
+                    if (etEmail.getText().toString().matches("")){
+                        Toast.makeText(LoginScreen.this, "E-mail field is empty!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        mAuth.sendPasswordResetEmail(etEmail.getText().toString())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LoginScreen.this, "Email sent!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+
+                }
+                else{
+                    login();
+                }
 
             }
         });
-
-
         googleSignInButton.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -95,14 +123,14 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
                 loginButton.setVisibility(View.VISIBLE);
             }
         }, 400);
-        final EditText etPassword = findViewById(R.id.et_password);
+
         etPassword.postDelayed(new Runnable() {
             @Override
             public void run() {
                 etPassword.setVisibility(View.VISIBLE);
             }
         }, 600);
-        final EditText etEmail = findViewById(R.id.et_email);
+
         etEmail.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -118,6 +146,19 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
                 tvAppName.setVisibility(View.VISIBLE);
             }
         }, 1000);
+
+
+        forgotPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                etPassword.setVisibility(View.INVISIBLE);
+                googleSignInButton.setVisibility(View.INVISIBLE);
+                forgotPassword.setVisibility(View.INVISIBLE);
+                loginButton.setText("Send Email");
+                forgotPasswordField = true;
+                return false;
+            }
+        });
     }
 
 
@@ -132,28 +173,32 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
         EditText etEmail = findViewById(R.id.et_email);
         EditText etPassword = findViewById(R.id.et_password);
 
-        if (etPassword.getText().toString().length() <= 5){
-            Toast.makeText(LoginScreen.this, "Password must contain min 6 character", Toast.LENGTH_SHORT).show();
-        }
         if (etEmail.getText().toString().matches("") || etPassword.getText().toString().matches("")){
             Toast.makeText(LoginScreen.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
         }
         else {
-            mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginScreen.this, "Authentication Success.", Toast.LENGTH_SHORT).show();
-                                //Intent mainIntent = new Intent(LoginScreen.this,AboutAdvertisement.class);
-                                //LoginScreen.this.startActivity(mainIntent);
-                                StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
-                            } else {
-                                Toast.makeText(LoginScreen.this, "Authentication failed22.", Toast.LENGTH_SHORT).show();
-                                createUser();
+            if (etPassword.getText().toString().length() <= 5) {
+                Toast.makeText(LoginScreen.this, "Password must contain min 6 character", Toast.LENGTH_SHORT).show();
+                TextView forgotPassword = findViewById(R.id.tv_forgotPassword);
+                forgotPassword.setVisibility(View.VISIBLE);
+            } else {
+                mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginScreen.this, "Authentication Success.", Toast.LENGTH_SHORT).show();
+                                    //Intent mainIntent = new Intent(LoginScreen.this,AboutAdvertisement.class);
+                                    //LoginScreen.this.startActivity(mainIntent);
+                                    StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
+                                    LoginScreen.this.finish();
+                                } else {
+                                    //Toast.makeText(LoginScreen.this, "Creating new user...", Toast.LENGTH_SHORT).show();
+                                    createUser();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
     }
 
@@ -162,7 +207,6 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
         EditText etEmail = findViewById(R.id.et_email);
         EditText etPassword = findViewById(R.id.et_password);
 
-        Log.d("LOGIN22", "createUserWithEmail:success");
         mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().trim(), etPassword.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -171,8 +215,9 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
                             //Intent mainIntent = new Intent(LoginScreen.this,AboutAdvertisement.class);
                             //LoginScreen.this.startActivity(mainIntent);
                             StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
+                            LoginScreen.this.finish();
                         } else {
-                            Toast.makeText(LoginScreen.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, "Wrong email or password.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -208,6 +253,7 @@ public class LoginScreen extends BasicActivity implements GoogleApiClient.OnConn
                             //Intent mainIntent = new Intent(LoginScreen.this,Advertisements.class);
                             //LoginScreen.this.startActivity(mainIntent);
                             StaticMethods.goToListAdvertisementsActivity(LoginScreen.this);
+                            LoginScreen.this.finish();
                         } else {
                             Toast.makeText(LoginScreen.this, "Authentication with Google failed.",Toast.LENGTH_SHORT).show();
                         }
