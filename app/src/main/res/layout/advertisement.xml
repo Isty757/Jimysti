@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="25dp">
+    android:layout_marginTop="25dp"
+    android:background="@color/colorWhite">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -14,6 +15,13 @@
         app:theme="@style/CustomToolBar">
 
     </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"/>
+
 
 
 

@@ -9,7 +9,7 @@
     </style>
 
     <style name = "CustomToolBar" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name = "android:background">@color/colorPrimary</item>
+        <item name = "android:background">@color/colorSapientia</item>
 
     </style>
 
