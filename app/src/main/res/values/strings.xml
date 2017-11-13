@@ -11,4 +11,11 @@
     <string name="settings_name">Settings</string>
 
     <string name="forgot_password">Forgot your password?</string>
+
+    <string name="pr_first_name">First Name</string>
+    <string name="pr_last_name">Last Name</string>
+    <string name="pr_email">Email</string>
+    <string name="pr_phone_number">Phone Number</string>
+    <string name="pr_password">Password</string>
+    <string name="pr_confirm_password">Confirm password</string>
 </resources>

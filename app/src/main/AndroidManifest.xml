@@ -30,6 +30,8 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".Activity.ListScreen"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activity.Profile"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

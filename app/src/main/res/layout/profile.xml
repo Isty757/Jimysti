@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="25dp"
+    android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/ll_icon_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/ll_button"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sapikogo"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Levente"
+            android:textColorHint="@color/colorBlack"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_icon_name"
+        app:layout_constraintBottom_toTopOf="@id/pr_first"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        >
+
+        <Button
+            android:id="@+id/bt_my_advertisements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:background="@drawable/rounded_button"
+            android:textColorHint="@color/colorBlack"
+            android:textColor="@color/colorBlack"
+            android:text="Edit"
+            android:textSize="12sp"
+            android:minHeight="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="15dp"
+            />
+        <Button
+            android:id="@+id/bt_save_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@drawable/rounded_button"
+            android:textColorHint="@color/colorBlack"
+            android:textColor="@color/colorBlack"
+            android:text="My Advertisements"
+            android:textSize="12sp"
+            android:minHeight="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+
+
+    <EditText
+        android:id="@+id/pr_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pr_first_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintTop_toBottomOf="@id/ll_button"
+        android:minHeight="30dp"
+
+        />
+    <EditText
+        android:id="@+id/pr_last"
+        app:layout_constraintTop_toBottomOf="@+id/pr_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pr_last_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:minHeight="30dp"
+        />
+    <EditText
+        android:id="@+id/pr_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pr_email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/pr_last"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:minHeight="30dp"
+        />
+    <EditText
+        android:id="@+id/pr_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="@string/pr_phone_number"
+        app:layout_constraintTop_toBottomOf="@id/pr_email"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:minHeight="30dp"
+        />
+    <EditText
+        android:id="@+id/pr_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pr_password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/pr_phone"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:minHeight="30dp"
+        />
+    <EditText
+        android:id="@+id/pr_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pr_confirm_password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/pr_password"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:minHeight="30dp"
+        />
+
+    <Button
+        android:id="@+id/bt_log_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:text="Log Out"
+        android:textSize="10sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/pr_confirm_password"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:minHeight="35dp"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>

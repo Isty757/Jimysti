@@ -71,9 +71,7 @@ public class ListScreen extends BasicActivity {
                 StaticMethods.goToTellAboutAdvertisementActivity(ListScreen.this);
                 return true;
             case R.id.item_face:
-                FirebaseAuth.getInstance().signOut();
-                StaticMethods.goToLoginScreenActivity(ListScreen.this);
-                finish();
+               StaticMethods.goToProfile(ListScreen.this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

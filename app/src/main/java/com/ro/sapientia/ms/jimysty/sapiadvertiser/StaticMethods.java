@@ -7,6 +7,7 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.AboutAdvertisement;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.ListScreen;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.LoginSignUpScreen;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.NewAdvertisement;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.Profile;
 
 /**
  * Created by Drako on 11-Nov-17.
@@ -28,6 +29,10 @@ public class StaticMethods {
     }
     public static void goToTellAboutAdvertisementActivity(Context context) {
         Intent i = new Intent(context, AboutAdvertisement.class);
+        context.startActivity(i);
+    }
+    public static void goToProfile(Context context) {
+        Intent i = new Intent(context, Profile.class);
         context.startActivity(i);
     }
 }
