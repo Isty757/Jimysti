@@ -1,14 +1,22 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,13 +27,18 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private List<String> mData = Collections.emptyList();
+    private List<String> mDescription = Collections.emptyList();
+    private List<String> mImages = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<String> data) {
+    public MyRecyclerViewAdapter(Context context, List<String> title , List<String> description , List<String> images ) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        this.mData = title;
+        this.mDescription = description;
+        this.mImages = images;
+
     }
 
     // inflates the row layout from xml when needed
@@ -40,7 +53,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String animal = mData.get(position);
+        String description = mDescription.get(position);
+        String image = mImages.get(position);
         holder.myTextView.setText(animal);
+        holder.myDescriptionView.setText(description);
+        //holder.myImageView.
+        new LongOperation().execute(image , holder);
+        //holder.myImageView.setImageBitmap();
+
     }
 
     // total number of rows
@@ -53,10 +73,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView myTextView;
+        public TextView myDescriptionView;
+        public ImageView myImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            myTextView = (TextView) itemView.findViewById(R.id.tv_title);
+            myTextView = itemView.findViewById(R.id.tv_title);
+            myDescriptionView =  itemView.findViewById(R.id.tv_some_detail);
+            myImageView = itemView.findViewById(R.id.iv_advertisement_image);
             itemView.setOnClickListener(this);
         }
 
@@ -79,5 +103,42 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    private class LongOperation extends AsyncTask<Object, Void, Bitmap> {
+
+        Bitmap bmp = null;
+        ViewHolder holder = null;
+
+        @Override
+        protected Bitmap doInBackground(Object... params) {
+
+            String urlImage = (String) params[0];
+            holder = (ViewHolder) params[1];
+            URL url = null;
+            try {
+                url = new URL(urlImage);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            holder.myImageView.setImageBitmap(result);
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 }

@@ -11,12 +11,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.GridViewAdapter;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.Advertisement;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.ImageItem;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.User;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
@@ -36,10 +45,28 @@ public class NewAdvertisement extends BasicActivity {
     String imageEncoded;
     List<String> imagesEncodedList;
 
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    FirebaseUser currentFirebaseUser;
+
+    User googleUser;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.new_advertisement);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(NewAdvertisement.this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            googleUser = new User(personGivenName, personFamilyName, "0740227129", personPhoto);
+        }
 
         Button tmpButton = findViewById(R.id.bt_add_images);
 
@@ -58,10 +85,36 @@ public class NewAdvertisement extends BasicActivity {
         faButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewAdvertisement.this.finish();
-                //StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
+
+
+
+                    EditText title = findViewById(R.id.et_newTitle);
+                    EditText description = findViewById(R.id.et_newDescription);
+                    myRef = database.getReference(currentFirebaseUser.getUid());
+                    ArrayList<String> imagesList = new ArrayList<>();
+                    imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b");
+                    imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7");
+                    //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList , googleUser);
+                    Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
+                    myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                    Log.d("AZAZ", googleUser.getFirstName());
+
+                    Log.d("AZAZ", googleUser.getLastName());
+
+                    myRef = database.getReference("Advertisements");
+                    myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                    NewAdvertisement.this.finish();
+                    StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
+
+
             }
         });
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        //Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+
+        database = FirebaseDatabase.getInstance();
+
     }
 
     @Override

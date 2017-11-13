@@ -25,6 +25,7 @@
             android:layout_marginStart="7dp"
             android:text="Add some Title"/>
         <EditText
+            android:id="@+id/et_newTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
@@ -43,6 +44,7 @@
             android:layout_marginStart="7dp"
             android:text="Add some Description about advertiesment"/>
         <EditText
+            android:id="@+id/et_newDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
