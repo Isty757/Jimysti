@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.AboutAdvertisement;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.Advertisements;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.LoginScreen;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.ListScreen;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.LoginSignUpScreen;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.NewAdvertisement;
 
 /**
@@ -15,11 +15,11 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.NewAdvertisement;
 public class StaticMethods {
 
     public static void goToLoginScreenActivity(Context context) {
-        Intent i = new Intent(context, LoginScreen.class);
+        Intent i = new Intent(context, LoginSignUpScreen.class);
         context.startActivity(i);
     }
     public static void goToListAdvertisementsActivity(Context context) {
-        Intent i = new Intent(context, Advertisements.class);
+        Intent i = new Intent(context, ListScreen.class);
         context.startActivity(i);
     }
     public static void goToCreateNewAdvertisementActivity(Context context) {

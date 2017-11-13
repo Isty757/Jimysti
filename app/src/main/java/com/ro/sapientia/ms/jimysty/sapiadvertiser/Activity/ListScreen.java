@@ -1,6 +1,5 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +21,7 @@ import java.util.ArrayList;
  * Created by Drako on 06-Nov-17.
  */
 
-public class Advertisements extends BasicActivity {
+public class ListScreen extends BasicActivity {
 
     MyRecyclerViewAdapter adapter;
 
@@ -66,16 +63,16 @@ public class Advertisements extends BasicActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_add:
-                //Intent mainIntent = new Intent(Advertisements.this,NewAdvertisement.class);
-                //Advertisements.this.startActivity(mainIntent);
-                StaticMethods.goToCreateNewAdvertisementActivity(Advertisements.this);
+                //Intent mainIntent = new Intent(ListScreen.this,NewAdvertisement.class);
+                //ListScreen.this.startActivity(mainIntent);
+                StaticMethods.goToCreateNewAdvertisementActivity(ListScreen.this);
                 return true;
             case R.id.item_action_search:
-                StaticMethods.goToTellAboutAdvertisementActivity(Advertisements.this);
+                StaticMethods.goToTellAboutAdvertisementActivity(ListScreen.this);
                 return true;
             case R.id.item_face:
                 FirebaseAuth.getInstance().signOut();
-                StaticMethods.goToLoginScreenActivity(Advertisements.this);
+                StaticMethods.goToLoginScreenActivity(ListScreen.this);
                 finish();
                 return true;
             default:
