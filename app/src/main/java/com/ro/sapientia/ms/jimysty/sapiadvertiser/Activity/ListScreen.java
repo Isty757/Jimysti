@@ -1,6 +1,7 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,46 +42,35 @@ import java.util.HashMap;
 
 public class ListScreen extends BasicActivity implements MyRecyclerViewAdapter.ItemClickListener{
 
-    MyRecyclerViewAdapter adapter;
+    private MyRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
 
-    FirebaseDatabase database;
-    DatabaseReference myRef;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.advertisement);
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
-        ArrayList<String> description = new ArrayList<>();
-        description.add("Szép ló :D");
-        description.add("Ez egy tehéén");
-        description.add("Cameltoe ???");
-        description.add("Báráánykaaa");
-        description.add("Attila? Kecske...négy lába van");
+        //default values for recycler view
+        ArrayList<String> noTitle = new ArrayList<>();
+        ArrayList<String> noDescription = new ArrayList<>();
         ArrayList<String> imagesList = new ArrayList<>();
-        imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b");
-        imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7");
-        imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/sapi.jpg?alt=media&token=2b32d318-d4f3-443c-b5e7-d2f7b469013d");
-        imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b");
-        imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7");
+        noTitle.add("No Title");
+        noDescription.add("Check the internet connection");
+        imagesList.add("");
 
+        // set up the RecyclerView
+        recyclerView = findViewById(R.id.rv_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MyRecyclerViewAdapter(this, noTitle , noDescription , imagesList);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+        // database references
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Advertisements");
 
@@ -97,69 +87,44 @@ public class ListScreen extends BasicActivity implements MyRecyclerViewAdapter.I
                     String description = (String) messageSnapshot.child("description").getValue();
 
                     ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
-                    //String[] images = (String[]) messageSnapshot.child("images").getValue();
-                    Log.d("AZAZ", "Value is: " + images.get(0) );
-                    Advertisement myAdvertisement = new Advertisement(title , description , images);
+                    //Advertisement myAdvertisement = new Advertisement(title , description , images);
                     titleList.add(title);
                     descriptionList.add(description);
                     imagesList.add(images.get(0));
                 }
-                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_list);
-                recyclerView.setLayoutManager(new LinearLayoutManager(ListScreen.this));
                 adapter = new MyRecyclerViewAdapter(ListScreen.this, titleList , descriptionList , imagesList);
                 adapter.setClickListener(ListScreen.this);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-        // set up the RecyclerView
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyRecyclerViewAdapter(this, animalNames , description , imagesList);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ListScreen.this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            //Log.d("LEGYENAZ", personPhoto.toString());
-            //ImageView googlePicture = findViewById(R.id.item_face);
-            //ClipData.Item picture = (ClipData.Item)findViewById(R.id.item_face);
-            //googlePicture.setImageURI(personPhoto);
-            //googlePicture.setVisibility(View.INVISIBLE);
-        }
-
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-        StaticMethods.goToTellAboutAdvertisementActivity(ListScreen.this);
+        StaticMethods.goToTellAboutAdvertisementActivity(ListScreen.this , adapter.getItem(position));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_add:
-                //Intent mainIntent = new Intent(ListScreen.this,NewAdvertisement.class);
-                //ListScreen.this.startActivity(mainIntent);
                 StaticMethods.goToCreateNewAdvertisementActivity(ListScreen.this);
                 return true;
             case R.id.item_action_search:
-                StaticMethods.goToTellAboutAdvertisementActivity(ListScreen.this);
                 return true;
             case R.id.item_face:
                StaticMethods.goToProfile(ListScreen.this);

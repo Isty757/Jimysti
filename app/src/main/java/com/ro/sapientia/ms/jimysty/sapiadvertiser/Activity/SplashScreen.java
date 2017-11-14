@@ -15,7 +15,9 @@ public class SplashScreen extends BasicActivity {
     /** Duration of wait **/
     private final int SPLASH_DISPLAY_LENGTH = 1000;
 
+    /** Firebase intance **/
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     /** Called when the activity is first created. */
     @Override
@@ -33,14 +35,11 @@ public class SplashScreen extends BasicActivity {
                 /* Create an Intent that will start the Menu-Activity. */
                 //Intent mainIntent = new Intent(SplashScreen.this,LoginScreen.class);
                 //SplashScreen.this.startActivity(mainIntent);
-
-
-                FirebaseUser user = mAuth.getCurrentUser();
+                user = mAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     StaticMethods.goToListAdvertisementsActivity(SplashScreen.this);
                     SplashScreen.this.finish();
-                    //Log.d("PASS", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
                     StaticMethods.goToLoginScreenActivity(SplashScreen.this);

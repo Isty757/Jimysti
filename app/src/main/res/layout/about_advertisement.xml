@@ -18,27 +18,26 @@
     <LinearLayout
         android:id="@+id/ll_description"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/rounded_edit_text"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/vp_images"
         app:layout_constraintBottom_toTopOf="@id/ll_profil_button"
         app:layout_constraintLeft_toLeftOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@id/vp_images">
 
         <TextView
+            android:id="@+id/tv_title_about_advertisement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ide esetleg a hirdetes Cime"
-            android:textColor="@color/colorBlack"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Ide esetleg a hirdetes Cime"
+            android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -50,13 +49,13 @@
             android:background="@color/colorSapientia" />
 
         <TextView
-            android:id="@+id/tv_description2"
+            android:id="@+id/tv_description_about_advertisement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:text="Ide jon majd egy rovid leiras! De ha megsem lesz rovid az sem baj"
             android:textColor="@color/colorBlack"
             app:layout_constraintLeft_toLeftOf="parent"

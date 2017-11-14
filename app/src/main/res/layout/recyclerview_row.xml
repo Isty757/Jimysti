@@ -9,6 +9,7 @@
         android:id="@+id/ll_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -19,14 +20,14 @@
             android:id="@+id/iv_profile_picture"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/sapikogo"
+            android:src="@drawable/profileplaceholder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_profile_picture"
@@ -37,13 +38,19 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="Szia "
                 android:textColor="@color/colorBlack"
                 />
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorSapientia"/>
+            <TextView
                 android:id="@+id/tv_some_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="Levente a kemeny gyerek"
                 android:textColor="@color/colorBlack"/>
 
@@ -56,12 +63,21 @@
     <ImageView
         android:id="@+id/iv_advertisement_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/index"
+        android:layout_height="250dp"
+        android:src="@drawable/noimage"
         app:layout_constraintTop_toBottomOf="@id/ll_details"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_advertisement_image"
+        android:background="@color/colorSapientia"/>
 
 
 </android.support.constraint.ConstraintLayout>

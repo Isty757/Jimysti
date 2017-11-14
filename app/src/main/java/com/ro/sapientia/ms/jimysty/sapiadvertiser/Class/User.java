@@ -19,6 +19,12 @@ public class User {
         this.mobileNumber = mobileNumber;
         this.image = image;
     }
+    public User(String firstName, String lastName, String mobileNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobileNumber = mobileNumber;
+
+    }
 
     public String getFirstName() {
         return firstName;

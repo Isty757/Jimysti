@@ -27,8 +27,9 @@ public class StaticMethods {
         Intent i = new Intent(context, NewAdvertisement.class);
         context.startActivity(i);
     }
-    public static void goToTellAboutAdvertisementActivity(Context context) {
+    public static void goToTellAboutAdvertisementActivity(Context context , String currentAdvertisement) {
         Intent i = new Intent(context, AboutAdvertisement.class);
+        i.putExtra("ADVERTISEMENT",currentAdvertisement);
         context.startActivity(i);
     }
     public static void goToProfile(Context context) {

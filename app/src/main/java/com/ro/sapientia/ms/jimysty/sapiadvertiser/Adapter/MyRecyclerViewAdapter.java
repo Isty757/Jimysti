@@ -57,10 +57,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         String image = mImages.get(position);
         holder.myTextView.setText(animal);
         holder.myDescriptionView.setText(description);
-        //holder.myImageView.
         new LongOperation().execute(image , holder);
-        //holder.myImageView.setImageBitmap();
-
     }
 
     // total number of rows
@@ -69,14 +66,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mData.size();
     }
 
-
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView myTextView;
-        public TextView myDescriptionView;
-        public ImageView myImageView;
+        private TextView myTextView;
+        private TextView myDescriptionView;
+        private ImageView myImageView;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tv_title);
             myDescriptionView =  itemView.findViewById(R.id.tv_some_detail);
@@ -94,6 +90,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public String getItem(int id) {
         return mData.get(id);
     }
+    public String getDescription(int id){
+        return mDescription.get(id);
+    }
 
     // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
@@ -105,7 +104,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         void onItemClick(View view, int position);
     }
 
-    private class LongOperation extends AsyncTask<Object, Void, Bitmap> {
+    private static class LongOperation extends AsyncTask<Object, Void, Bitmap> {
 
         Bitmap bmp = null;
         ViewHolder holder = null;
@@ -116,16 +115,21 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             String urlImage = (String) params[0];
             holder = (ViewHolder) params[1];
             URL url = null;
-            try {
-                url = new URL(urlImage);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            if (urlImage.matches("")){
 
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            else {
+                try {
+                    url = new URL(urlImage);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return bmp;
         }

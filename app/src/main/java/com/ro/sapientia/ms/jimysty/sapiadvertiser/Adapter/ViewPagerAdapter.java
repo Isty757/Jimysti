@@ -16,24 +16,26 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Drako on 04-Nov-17.
  */
 
 public class ViewPagerAdapter extends PagerAdapter {
 
-    Activity activity;
-    String[] images;
-    LayoutInflater inflater;
+    private Activity activity;
+    private ArrayList<String> images;
+    private LayoutInflater inflater;
 
-    public ViewPagerAdapter(Activity activity, String[] images) {
+    public ViewPagerAdapter(Activity activity, ArrayList<String> images) {
         this.activity = activity;
         this.images = images;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -53,12 +55,10 @@ public class ViewPagerAdapter extends PagerAdapter {
         int width = dis.widthPixels;
         image.setMinimumHeight(height);
         image.setMinimumWidth(width);
-        
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("myimage");
 
         try {
             Glide.with(activity.getApplicationContext())
-                    .load(images[position])
+                    .load(images.get(position))
                     .placeholder(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(image);
