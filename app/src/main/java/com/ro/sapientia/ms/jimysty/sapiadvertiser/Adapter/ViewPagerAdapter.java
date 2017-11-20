@@ -12,8 +12,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         inflater = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.view_pager_item, container, false);
+        View itemView = inflater.inflate(R.layout.item_view_pager, container, false);
 
         ImageView image = itemView.findViewById(R.id.iv_imagePagerItem);
         DisplayMetrics dis = new DisplayMetrics();
@@ -59,7 +57,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         try {
             Glide.with(activity.getApplicationContext())
                     .load(images.get(position))
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.drawable.noimage)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(image);
         }

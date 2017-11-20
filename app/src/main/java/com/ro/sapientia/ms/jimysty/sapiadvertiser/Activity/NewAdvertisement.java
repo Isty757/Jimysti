@@ -36,7 +36,6 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.User;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class NewAdvertisement extends BasicActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.new_advertisement);
+        setContentView(R.layout.activity_new_advertisement);
 
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(NewAdvertisement.this);
@@ -91,6 +90,8 @@ public class NewAdvertisement extends BasicActivity {
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGE_MULTIPLE);
+
+
             }
         });
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -118,6 +119,7 @@ public class NewAdvertisement extends BasicActivity {
             myRef = database.getReference("Advertisements");
             myRef.child(title.getText().toString()).setValue(myAdvertisement);
 
+                Log.d("AZAZ2", ""+imageURIs.size());
             for (int i = 0 ; i < imageURIs.size() ; i++){
                 mStorageRef.putFile(imageURIs.get(i))
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -125,6 +127,7 @@ public class NewAdvertisement extends BasicActivity {
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 // Get a URL to the uploaded content
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                Log.d("AZAZ2", "Itten igen pontoson");
                                 Toast.makeText(NewAdvertisement.this, "Rendben van", Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -133,6 +136,7 @@ public class NewAdvertisement extends BasicActivity {
                             public void onFailure(@NonNull Exception exception) {
                                 // Handle unsuccessful uploads
                                 // ...
+                                Log.d("AZAZ2",exception.getMessage() );
                                 Toast.makeText(NewAdvertisement.this, "nincs" + exception.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
@@ -160,14 +164,12 @@ public class NewAdvertisement extends BasicActivity {
 
         try {
             // When an Image is picked
-            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
-                    && null != data) {
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK && null != data) {
                 // Get the Image from data
 
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
                 imagesEncodedList = new ArrayList<String>();
                 if(data.getData()!=null){
-
 
                     Uri mImageUri=data.getData();
 
@@ -185,15 +187,13 @@ public class NewAdvertisement extends BasicActivity {
                     ArrayList<ImageItem> list = new ArrayList<ImageItem>();
 
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                    Log.d("IZA",bitmap.toString());
                     ImageItem imItem = new ImageItem(getScaledBitmap(bitmap,(float)0.5 ) , "Titulus");
                     list.add(imItem);
 
                     gridView = findViewById(R.id.gridView);
-                    gridAdapter = new GridViewAdapter(this, R.layout.grid_view_item, list );
+                    gridAdapter = new GridViewAdapter(this, R.layout.item_grid_view, list );
                     gridView.setAdapter(gridAdapter);
-
-
-
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
@@ -225,7 +225,7 @@ public class NewAdvertisement extends BasicActivity {
                                 list.add(imItem);
                             }
                             gridView = findViewById(R.id.gridView);
-                            gridAdapter = new GridViewAdapter(this, R.layout.grid_view_item, list);
+                            gridAdapter = new GridViewAdapter(this, R.layout.item_grid_view, list);
                             gridView.setAdapter(gridAdapter);
 
                             Log.d("LOG_TAG", "Selected Images" + mArrayUri.size());

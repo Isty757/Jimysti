@@ -1,6 +1,5 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
 
@@ -23,7 +22,7 @@ public class SplashScreen extends BasicActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.splash_screen);
+        setContentView(R.layout.activity_splash_screen);
 
         mAuth = FirebaseAuth.getInstance();
 

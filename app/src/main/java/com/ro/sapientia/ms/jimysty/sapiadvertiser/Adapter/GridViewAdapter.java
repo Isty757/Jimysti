@@ -2,6 +2,7 @@ package com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.ImageItem;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Drako on 04-Nov-17.

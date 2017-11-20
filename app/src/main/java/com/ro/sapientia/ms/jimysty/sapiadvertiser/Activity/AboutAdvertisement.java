@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -17,19 +15,15 @@ import android.view.View;
 import android.widget.Button;
 import android.Manifest;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.MyRecyclerViewAdapter;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.Advertisement;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.ViewPagerAdapter;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
 import java.util.ArrayList;
 
@@ -56,7 +50,7 @@ public class AboutAdvertisement extends BasicActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.about_advertisement);
+        setContentView(R.layout.activity_about_advertisement);
 
         database = FirebaseDatabase.getInstance();
 

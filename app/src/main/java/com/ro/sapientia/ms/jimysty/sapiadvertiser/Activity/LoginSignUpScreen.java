@@ -47,7 +47,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
+        setContentView(R.layout.activity_login_screen);
 
         final ImageView image1 = findViewById(R.id.iv_sapi);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_anim);

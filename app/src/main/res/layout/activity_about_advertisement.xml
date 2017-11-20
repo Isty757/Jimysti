@@ -22,7 +22,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/border_green_rectangle_white_background"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/ll_profil_button"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -75,7 +75,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/border_green_rectangle_white_background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="Call creator"
             android:layout_marginLeft="60dp"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/border_green_rectangle_green_background"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
