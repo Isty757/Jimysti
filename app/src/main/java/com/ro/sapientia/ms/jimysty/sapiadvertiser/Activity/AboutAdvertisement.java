@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -12,16 +13,21 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.Manifest;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.User;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.ViewPagerAdapter;
 
@@ -46,6 +52,8 @@ public class AboutAdvertisement extends BasicActivity {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
+
+    String phoneNumber = "0740000000";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,19 +80,53 @@ public class AboutAdvertisement extends BasicActivity {
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String title = (String) dataSnapshot.child("title").getValue();
-                    String description = (String) dataSnapshot.child("description").getValue();
-                    ArrayList<String> images = (ArrayList<String>) dataSnapshot.child("images").getValue();
+                    try {
+                        String title = (String) dataSnapshot.child("title").getValue();
+                        String description = (String) dataSnapshot.child("description").getValue();
+                        ArrayList<String> images = (ArrayList<String>) dataSnapshot.child("images").getValue();
 
-                    TextView tvTitle = findViewById(R.id.tv_title_about_advertisement);
-                    TextView tvDescription = findViewById(R.id.tv_description_about_advertisement);
+                        String profilePicture = (String) dataSnapshot.child("googleUser").child("image").getValue();
+                        String firstName = (String) dataSnapshot.child("googleUser").child("firstName").getValue();
+                        String lastName = (String) dataSnapshot.child("googleUser").child("lastName").getValue();
+                        phoneNumber = (String) dataSnapshot.child("googleUser").child("mobileNumber").getValue();
 
-                    tvTitle.setText(title);
-                    tvDescription.setText(description);
-                    viewPager = findViewById(R.id.vp_images);
-                    adapter = new ViewPagerAdapter(AboutAdvertisement.this , images);
-                    viewPager.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                        TextView tvName = findViewById(R.id.tv_profile_name_aboutAdvertisement);
+                        ImageView ivProfilePicture = findViewById(R.id.iv_profile);
+
+                        //Uri myUri = Uri.parse(profilePicture);
+                        //ivProfilePicture.setImageURI(myUri);
+                        String fullName = firstName + " " + lastName;
+                        tvName.setText(fullName);
+
+                        Glide.with(getApplicationContext()).load(profilePicture)
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(ivProfilePicture);
+                    /*
+                    for (DataSnapshot messageSnapshot: dataSnapshot.child("googleUser").getChildren()){
+                        String firstName = (String) messageSnapshot.child("firstName").getValue();
+                        String lastName = (String) messageSnapshot.child("lastName").getValue();
+                        phoneNumber = (String) messageSnapshot.child("mobileNumber").getValue();
+
+                        TextView tvName = findViewById(R.id.tv_profile_name_aboutAdvertisement);
+
+                        tvName.setText(firstName + " " + lastName);
+                    }
+*/
+                        TextView tvTitle = findViewById(R.id.tv_title_about_advertisement);
+                        TextView tvDescription = findViewById(R.id.tv_description_about_advertisement);
+
+
+                        tvTitle.setText(title);
+                        tvDescription.setText(description);
+                        viewPager = findViewById(R.id.vp_images);
+                        adapter = new ViewPagerAdapter(AboutAdvertisement.this, images);
+                        viewPager.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    } catch (Exception e){
+
+                    }
 
                 }
                 @Override
@@ -109,14 +151,21 @@ public class AboutAdvertisement extends BasicActivity {
         callCreator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:0757752221"));
-                if (ContextCompat.checkSelfPermission(AboutAdvertisement.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AboutAdvertisement.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE);
-                }
-                else {
-                    startActivity(callIntent);
-                }
+                view.startAnimation(AnimationUtils.loadAnimation(AboutAdvertisement.this, R.anim.button_click_animation));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                        if (ContextCompat.checkSelfPermission(AboutAdvertisement.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(AboutAdvertisement.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE);
+                        }
+                        else {
+                            startActivity(callIntent);
+                        }
+                    }
+                }, 300);
+
             }
         });
     }

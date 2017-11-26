@@ -82,6 +82,22 @@
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         android:text="Login"/>
+    <Button
+        android:visibility="invisible"
+        android:id="@+id/bt_loginWithoutSignUp_loginScreen"
+        android:textColor="@color/colorBlack"
+        android:background="@drawable/border_green_rectangle_green_background"
+        android:text="Login without sign up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        />
+
     <TextView
         android:id="@+id/tv_forgotPassword"
         android:visibility="invisible"
@@ -91,11 +107,13 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:gravity="right"
-        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintTop_toBottomOf="@id/bt_loginWithoutSignUp_loginScreen"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         android:textColor="@color/colorPrimary"
         android:text="@string/forgot_password"/>
+
+
 
     <com.google.android.gms.common.SignInButton
         android:visibility="invisible"

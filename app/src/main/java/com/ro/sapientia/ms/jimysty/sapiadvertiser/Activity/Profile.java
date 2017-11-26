@@ -30,4 +30,12 @@ public class Profile extends BasicActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        StaticMethods.goToListAdvertisementsActivity(Profile.this);
+        finish();
+
+    }
 }

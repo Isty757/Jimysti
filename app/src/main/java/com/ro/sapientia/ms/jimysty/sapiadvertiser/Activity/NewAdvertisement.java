@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -76,21 +77,23 @@ public class NewAdvertisement extends BasicActivity {
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
-            //googleUser = new User(personGivenName, personFamilyName, "0740227129", personPhoto);
-            googleUser = new User(personGivenName, personFamilyName, "0740227129");
+            googleUser = new User(personGivenName, personFamilyName, "0740227129", personPhoto.toString());
+            //googleUser = new User(personGivenName, personFamilyName, "0740227129");
         }
+
 
         Button tmpButton = findViewById(R.id.bt_add_images);
 
         tmpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(NewAdvertisement.this, R.anim.button_click_animation));
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGE_MULTIPLE);
-
+                overridePendingTransition(R.anim.zoom_in,R.anim.zoom_in);
 
             }
         });
@@ -100,53 +103,62 @@ public class NewAdvertisement extends BasicActivity {
         faButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final EditText title = findViewById(R.id.et_newTitle);
+                final EditText description = findViewById(R.id.et_newDescription);
 
-            EditText title = findViewById(R.id.et_newTitle);
-            EditText description = findViewById(R.id.et_newDescription);
-            myRef = database.getReference(currentFirebaseUser.getUid());
-            mStorageRef = FirebaseStorage.getInstance().getReference();
-
-            imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b");
-            imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7");
-            User m = new User("Barabas","Levente","0740227129" );
-            Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList , googleUser);
-            //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
-            myRef.child(title.getText().toString()).setValue(myAdvertisement);
-            Log.d("AZAZ", googleUser.getFirstName());
-
-            Log.d("AZAZ", googleUser.getLastName());
-
-            myRef = database.getReference("Advertisements");
-            myRef.child(title.getText().toString()).setValue(myAdvertisement);
-
-                Log.d("AZAZ2", ""+imageURIs.size());
-            for (int i = 0 ; i < imageURIs.size() ; i++){
-                mStorageRef.putFile(imageURIs.get(i))
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // Get a URL to the uploaded content
-                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                Log.d("AZAZ2", "Itten igen pontoson");
-                                Toast.makeText(NewAdvertisement.this, "Rendben van", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle unsuccessful uploads
-                                // ...
-                                Log.d("AZAZ2",exception.getMessage() );
-                                Toast.makeText(NewAdvertisement.this, "nincs" + exception.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-            }
+                if ((title.getText().toString().matches("")) || (description.getText().toString().matches(""))) {
+                    Toast.makeText(NewAdvertisement.this,"Please fill all empty fields!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    myRef = database.getReference(currentFirebaseUser.getUid());
 
 
+                    //imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b");
+                    //imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7");
+                    //User m = new User("Barabas", "Levente", "0740227129");
 
-            NewAdvertisement.this.finish();
-            StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
 
+                    Log.d("AZAZ2", "" + imageURIs.size());
+                    for (int i = 0; i < imageURIs.size(); i++) {
+                        mStorageRef = FirebaseStorage.getInstance().getReference(title.getText().toString()+i);
+                        mStorageRef.putFile(imageURIs.get(i))
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // Get a URL to the uploaded content
+                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        imagesList.add(downloadUrl.toString());
+                                        Log.d("AZAZ2", "Itten igen pontoson");
+                                        Toast.makeText(NewAdvertisement.this, "Rendben van", Toast.LENGTH_SHORT).show();
+
+                                        Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+                                        //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
+                                        myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                                        Log.d("AZAZ", googleUser.getFirstName());
+
+                                        Log.d("AZAZ", googleUser.getLastName());
+
+                                        myRef = database.getReference("Advertisements");
+                                        myRef.child(title.getText().toString()).setValue(myAdvertisement);
+
+                                        NewAdvertisement.this.finish();
+                                        StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle unsuccessful uploads
+                                        // ...
+                                        Log.d("AZAZ2", exception.getMessage());
+                                        Toast.makeText(NewAdvertisement.this, "nincs" + exception.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    }
+
+
+
+                }
 
             }
         });
@@ -156,6 +168,12 @@ public class NewAdvertisement extends BasicActivity {
 
         database = FirebaseDatabase.getInstance();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.zoom_in,R.anim.zoom_out);
     }
 
     @Override
@@ -186,7 +204,8 @@ public class NewAdvertisement extends BasicActivity {
 
                     ArrayList<ImageItem> list = new ArrayList<ImageItem>();
 
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                    Bitmap bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri), 120, 120, false);
                     Log.d("IZA",bitmap.toString());
                     ImageItem imItem = new ImageItem(getScaledBitmap(bitmap,(float)0.5 ) , "Titulus");
                     list.add(imItem);
@@ -220,9 +239,12 @@ public class NewAdvertisement extends BasicActivity {
                                 imagesEncodedList.add(imageEncoded);
                                 cursor.close();
 
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                                Bitmap bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri), 120, 120, false);
+
+                                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                                 ImageItem imItem = new ImageItem(getScaledBitmap(bitmap, (float) 0.5), "Titulus " + i);
                                 list.add(imItem);
+                                imageURIs.add(uri);
                             }
                             gridView = findViewById(R.id.gridView);
                             gridAdapter = new GridViewAdapter(this, R.layout.item_grid_view, list);

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_images"
@@ -15,18 +16,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+
     <LinearLayout
         android:id="@+id/ll_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/border_green_rectangle_white_background"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/ll_profil_button"
+        android:scrollbars="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp_images">
+        app:layout_constraintTop_toBottomOf="@id/vp_images"
+        >
 
         <TextView
             android:id="@+id/tv_title_about_advertisement"
@@ -36,7 +40,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:text="Ide esetleg a hirdetes Cime"
+            android:text="Ide "
+            android:textSize="20dp"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -56,14 +61,14 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:text="Ide jon majd egy rovid leiras! De ha megsem lesz rovid az sem baj"
+            android:scrollbars = "vertical"
+            android:maxLines="11"
+            android:text="Ide jon ma"
             android:textColor="@color/colorBlack"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_separator" />
-
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/ll_profil_button"
@@ -96,6 +101,7 @@
                 android:layout_height="60dp"
                 />
             <TextView
+                android:id="@+id/tv_profile_name_aboutAdvertisement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
