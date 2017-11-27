@@ -3,7 +3,6 @@ package com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 import java.io.IOException;
@@ -20,12 +21,16 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * Created by Drako on 13-Nov-17.
  */
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
+    public boolean isClickable = true;
+
+    private List<String> mProfilePictures = Collections.emptyList();
     private List<String> mData = Collections.emptyList();
     private List<String> mDescription = Collections.emptyList();
     private List<String> mImages = Collections.emptyList();
@@ -33,18 +38,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<String> title , List<String> description , List<String> images ) {
+    public MyRecyclerViewAdapter(Context context, List<String> profilPictures, List<String> title , List<String> description , List<String> images ) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = title;
         this.mDescription = description;
         this.mImages = images;
-
+        this.mProfilePictures = profilPictures;
     }
 
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = mInflater.inflate(R.layout.item_recyclerview_row, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -55,12 +60,22 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         String animal = mData.get(position);
         String description = mDescription.get(position);
         String image = mImages.get(position);
+        String profilePicture = mProfilePictures.get(position);
         holder.myTextView.setText(animal);
         holder.myDescriptionView.setText(description);
-        //holder.myImageView.
-        new LongOperation().execute(image , holder);
-        //holder.myImageView.setImageBitmap();
 
+        Glide.with(mInflater.getContext()).load(profilePicture)
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.myProfilePictureImageView);
+
+        Glide.with(mInflater.getContext()).load(image)
+                .thumbnail(0.5f)
+                .crossFade()
+                .override(500,300)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.myImageView);
     }
 
     // total number of rows
@@ -69,18 +84,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mData.size();
     }
 
-
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView myTextView;
-        public TextView myDescriptionView;
-        public ImageView myImageView;
+        private ImageView myProfilePictureImageView;
+        private TextView myTextView;
+        private TextView myDescriptionView;
+        private ImageView myImageView;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tv_title);
             myDescriptionView =  itemView.findViewById(R.id.tv_some_detail);
             myImageView = itemView.findViewById(R.id.iv_advertisement_image);
+            myProfilePictureImageView = itemView.findViewById(R.id.iv_profile_picture);
             itemView.setOnClickListener(this);
         }
 
@@ -94,6 +110,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public String getItem(int id) {
         return mData.get(id);
     }
+    public String getDescription(int id){
+        return mDescription.get(id);
+    }
 
     // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {
@@ -103,42 +122,5 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
-    }
-
-    private class LongOperation extends AsyncTask<Object, Void, Bitmap> {
-
-        Bitmap bmp = null;
-        ViewHolder holder = null;
-
-        @Override
-        protected Bitmap doInBackground(Object... params) {
-
-            String urlImage = (String) params[0];
-            holder = (ViewHolder) params[1];
-            URL url = null;
-            try {
-                url = new URL(urlImage);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            holder.myImageView.setImageBitmap(result);
-        }
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
     }
 }

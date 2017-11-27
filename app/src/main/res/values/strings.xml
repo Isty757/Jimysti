@@ -7,8 +7,14 @@
     <string name="fb_login_protocol_scheme">fb[APP_ID]</string>
 
     <string name="search_content">Search</string>
+<<<<<<< HEAD
     <string name="face_content">Face</string>
     <string name="add_content">Add</string>
+=======
+    <string name="add_content">Add</string>
+    <string name="face_content">Profil</string>
+    <string name="settings_name">Add</string>
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed
 
     <string name="forgot_password">Forgot your password?</string>
 

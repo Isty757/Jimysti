@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/iv_imagePagerItem"
         android:layout_width="match_parent"
-        android:src="@drawable/placeholder"
+        android:src="@drawable/noimage"
         android:layout_height="match_parent" />
 
 </android.support.constraint.ConstraintLayout>

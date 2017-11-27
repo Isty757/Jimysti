@@ -12,9 +12,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by Drako on 04-Nov-17.
@@ -22,18 +22,18 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
-    Activity activity;
-    String[] images;
-    LayoutInflater inflater;
+    private Activity activity;
+    private ArrayList<String> images;
+    private LayoutInflater inflater;
 
-    public ViewPagerAdapter(Activity activity, String[] images) {
+    public ViewPagerAdapter(Activity activity, ArrayList<String> images) {
         this.activity = activity;
         this.images = images;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         inflater = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.view_pager_item, container, false);
+        View itemView = inflater.inflate(R.layout.item_view_pager, container, false);
 
         ImageView image = itemView.findViewById(R.id.iv_imagePagerItem);
         DisplayMetrics dis = new DisplayMetrics();
@@ -53,13 +53,11 @@ public class ViewPagerAdapter extends PagerAdapter {
         int width = dis.widthPixels;
         image.setMinimumHeight(height);
         image.setMinimumWidth(width);
-        
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("myimage");
 
         try {
             Glide.with(activity.getApplicationContext())
-                    .load(images[position])
-                    .placeholder(R.mipmap.ic_launcher)
+                    .load(images.get(position))
+                    .placeholder(R.drawable.noimage)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(image);
         }

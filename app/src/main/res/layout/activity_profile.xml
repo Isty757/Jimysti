@@ -17,7 +17,7 @@
             android:id="@+id/iv_profile_picture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/sapikogo"
+            android:src="@drawable/profileplaceholder"
             />
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/border_green_rectangle_green_background"
             android:textColorHint="@color/colorBlack"
             android:textColor="@color/colorBlack"
             android:text="Edit"
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/border_green_rectangle_green_background"
             android:textColorHint="@color/colorBlack"
             android:textColor="@color/colorBlack"
             android:text="My Advertisements"
@@ -82,10 +82,17 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:paddingLeft="10dp"
         android:editable="false"
         android:background="@drawable/no_edit"
         android:textColorHint="@color/colorBGray"
+=======
+        android:paddingLeft="12dp"
+        android:editable="false"
+        android:background="@drawable/border_green_rectangle_white_background"
+        android:textColorHint="@color/colorBlack"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/ll_button"
         android:minHeight="30dp"
@@ -101,9 +108,14 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:editable="false"
         android:background="@drawable/no_edit"
         android:textColorHint="@color/colorBGray"
+=======
+        android:background="@drawable/border_green_rectangle_white_background"
+        android:textColorHint="@color/colorBlack"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -117,9 +129,14 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:editable="false"
         android:background="@drawable/no_edit"
         android:textColorHint="@color/colorBGray"
+=======
+        android:background="@drawable/border_green_rectangle_white_background"
+        android:textColorHint="@color/colorBlack"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -133,9 +150,14 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:editable="false"
         android:background="@drawable/no_edit"
         android:textColorHint="@color/colorBGray"
+=======
+        android:background="@drawable/border_green_rectangle_white_background"
+        android:textColorHint="@color/colorBlack"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -149,9 +171,14 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:editable="false"
         android:background="@drawable/no_edit"
         android:textColorHint="@color/colorBGray"
+=======
+        android:background="@drawable/border_green_rectangle_white_background"
+        android:textColorHint="@color/colorBlack"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -164,8 +191,12 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
+<<<<<<< HEAD:app/src/main/res/layout/profile.xml
         android:editable="false"
         android:background="@drawable/no_edit"
+=======
+        android:background="@drawable/border_green_rectangle_white_background"
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:layout_marginTop="20dp"
         android:textColorHint="@color/colorBGray"
         android:textColor="@color/colorGrey"
@@ -176,7 +207,7 @@
         android:id="@+id/bt_log_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/border_green_rectangle_green_background"
         android:textColorHint="@color/colorBlack"
         android:textColor="@color/colorBlack"
         android:text="Log Out"

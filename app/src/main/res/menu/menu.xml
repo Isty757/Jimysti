@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <item
         android:id="@+id/item_face"
-        android:icon="@drawable/index"
-        android:orderInCategory="102"
-        android:title="@string/face_content"
-        app:showAsAction="always">
-    </item>
-
-    <item
-        android:id="@+id/item_add"
-        android:icon="@drawable/add"
+        android:icon="@drawable/icon_menu_bar_img"
         android:orderInCategory="101"
+<<<<<<< HEAD
         android:title="@string/add_content"
         app:showAsAction="always">
 
+=======
+        android:title="@string/face_content"
+        app:showAsAction="ifRoom">
+>>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed
     </item>
 
     <item
         android:id="@+id/item_action_search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/icon_search"
         android:orderInCategory="100"
         android:title="@string/search_content"
-        app:showAsAction="always">
-
+        app:showAsAction="always"
+        >
     </item>
 
 </menu>

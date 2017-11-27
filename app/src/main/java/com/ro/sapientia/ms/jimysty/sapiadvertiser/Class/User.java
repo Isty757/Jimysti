@@ -11,13 +11,19 @@ public class User {
     private String firstName;
     private String lastName;
     private String mobileNumber;
-    private Uri image;
+    private String image;
 
-    public User(String firstName, String lastName, String mobileNumber, Uri image) {
+    public User(String firstName, String lastName, String mobileNumber, String image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobileNumber = mobileNumber;
         this.image = image;
+    }
+    public User(String firstName, String lastName, String mobileNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobileNumber = mobileNumber;
+
     }
 
     public String getFirstName() {
@@ -44,11 +50,11 @@ public class User {
         this.mobileNumber = mobileNumber;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Uri image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

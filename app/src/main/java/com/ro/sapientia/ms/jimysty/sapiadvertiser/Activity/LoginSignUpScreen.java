@@ -38,140 +38,72 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
 public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "LoginSignUpScreen";
+
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private final int RC_SIGN_IN = 11;
 
     private boolean forgotPasswordField = false;
 
+    private ImageView logoImageView;
+    private EditText etEmail;
+    private EditText etPassword;
+    private TextView forgotPassword;
+    private Button loginWithoutSignUpButton;
+    private Button loginButton;
+    private SignInButton googleSignInButton;
+    private TextView tvAppName;
+
+    private static final int DELAY = 200;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
-
-        final ImageView image1 = findViewById(R.id.iv_sapi);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_anim);
-        image1.startAnimation(animation);
+        setContentView(R.layout.activity_login_screen);
 
         mAuth = FirebaseAuth.getInstance();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        initializeViewWithControl();
 
-        final SignInButton googleSignInButton = findViewById(R.id.sign_in_button);
-        googleSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signInWithGoogle();
-            }
-        });
-        final EditText etEmail = findViewById(R.id.et_email);
-        final EditText etPassword = findViewById(R.id.et_password);
-        final TextView forgotPassword = findViewById(R.id.tv_forgotPassword);
+        initializeGoogleApi();
 
-        final Button loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (forgotPasswordField){
-                    etPassword.setVisibility(View.VISIBLE);
-                    googleSignInButton.setVisibility(View.VISIBLE);
-                    forgotPassword.setVisibility(View.VISIBLE);
-                    loginButton.setText("Login");
-                    forgotPasswordField = false;
-                    if (etEmail.getText().toString().matches("")){
-                        Toast.makeText(LoginSignUpScreen.this, "E-mail field is empty!", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        mAuth.sendPasswordResetEmail(etEmail.getText().toString())
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(LoginSignUpScreen.this, "Email sent!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                    }
+        settingListeners();
 
-                }
-                else{
-                    login();
-                }
-
-            }
-        });
-        googleSignInButton.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                googleSignInButton.setVisibility(View.VISIBLE);
-
-                //Animation animation3 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_in_out_anim);
-                //signInButton.startAnimation(animation3);
-            }
-        }, 200);
-        loginButton.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loginButton.setVisibility(View.VISIBLE);
-            }
-        }, 400);
-
-        etPassword.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                etPassword.setVisibility(View.VISIBLE);
-            }
-        }, 600);
-
-        etEmail.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                etEmail.setVisibility(View.VISIBLE);
-            }
-        }, 800);
-        final TextView tvAppName = findViewById(R.id.tv_appName);
-        tvAppName.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.bouncing_anim);
-                image1.startAnimation(animation2);
-                tvAppName.setVisibility(View.VISIBLE);
-            }
-        }, 1000);
-
-
-        forgotPassword.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                etPassword.setVisibility(View.INVISIBLE);
-                googleSignInButton.setVisibility(View.INVISIBLE);
-                forgotPassword.setVisibility(View.INVISIBLE);
-                loginButton.setText("Send Email");
-                forgotPasswordField = true;
-                return false;
-            }
-        });
+        delayingItems();
     }
 
 
-    private void signInWithGoogle() {
-
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    private void checkIfFieldsAreEmpty(){
+        if (forgotPasswordField){
+            etPassword.setVisibility(View.VISIBLE);
+            googleSignInButton.setVisibility(View.VISIBLE);
+            forgotPassword.setVisibility(View.VISIBLE);
+            loginButton.setText("Login");
+            forgotPasswordField = false;
+            if (etEmail.getText().toString().matches("")){
+                Toast.makeText(LoginSignUpScreen.this, "E-mail field is empty!", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                mAuth.sendPasswordResetEmail(etEmail.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginSignUpScreen.this, "Email sent!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        }
+        else{
+            login();
+        }
     }
+
+
 
     private void login(){
-
-        EditText etEmail = findViewById(R.id.et_email);
-        EditText etPassword = findViewById(R.id.et_password);
 
         if (etEmail.getText().toString().matches("") || etPassword.getText().toString().matches("")){
             Toast.makeText(LoginSignUpScreen.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
@@ -188,13 +120,11 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(LoginSignUpScreen.this, "Authentication Success.", Toast.LENGTH_SHORT).show();
-                                    //Intent mainIntent = new Intent(LoginSignUpScreen.this,AboutAdvertisement.class);
-                                    //LoginSignUpScreen.this.startActivity(mainIntent);
                                     StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
                                     LoginSignUpScreen.this.finish();
                                 } else {
                                     //Toast.makeText(LoginSignUpScreen.this, "Creating new user...", Toast.LENGTH_SHORT).show();
-                                    createUser();
+                                    createNewUser();
                                 }
                             }
                         });
@@ -202,25 +132,26 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         }
     }
 
-    private void createUser(){
-
-        EditText etEmail = findViewById(R.id.et_email);
-        EditText etPassword = findViewById(R.id.et_password);
-
+    private void createNewUser(){
         mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().trim(), etPassword.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //Intent mainIntent = new Intent(LoginSignUpScreen.this,AboutAdvertisement.class);
-                            //LoginSignUpScreen.this.startActivity(mainIntent);
                             StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
                             LoginSignUpScreen.this.finish();
                         } else {
                             Toast.makeText(LoginSignUpScreen.this, "Wrong email or password.", Toast.LENGTH_SHORT).show();
+                            forgotPassword.setVisibility(View.VISIBLE);
                         }
                     }
                 });
+    }
+
+    private void signInWithGoogle() {
+
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -235,6 +166,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
+                Toast.makeText(LoginSignUpScreen.this, "Sign in with Google Failed!", Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
             }
         }
@@ -249,9 +181,6 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginSignUpScreen.this, "Authentication with Google success.",Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //Intent mainIntent = new Intent(LoginSignUpScreen.this,Advertisements.class);
-                            //LoginSignUpScreen.this.startActivity(mainIntent);
                             StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
                             LoginSignUpScreen.this.finish();
                         } else {
@@ -263,8 +192,120 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d("Google", "onConnectionFailed:" + connectionResult);
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not be available.
+        Log.d(TAG , "onConnectionFailed:" + connectionResult);
+    }
+
+    private void delayingItems(){
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_anim);
+        logoImageView.startAnimation(animation);
+
+        googleSignInButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                googleSignInButton.setVisibility(View.VISIBLE);
+            }
+        }, DELAY);
+        loginWithoutSignUpButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loginWithoutSignUpButton.setVisibility(View.VISIBLE);
+            }
+        }, 2*DELAY);
+        loginButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loginButton.setVisibility(View.VISIBLE);
+            }
+        }, 3*DELAY);
+
+        etPassword.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etPassword.setVisibility(View.VISIBLE);
+            }
+        }, 4*DELAY);
+
+        etEmail.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etEmail.setVisibility(View.VISIBLE);
+            }
+        }, 5*DELAY);
+
+        tvAppName.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.bouncing_anim);
+                logoImageView.startAnimation(animation2);
+                tvAppName.setVisibility(View.VISIBLE);
+            }
+        }, 6*DELAY);
+    }
+
+    private void initializeViewWithControl(){
+        //Edit Texts
+        etEmail = findViewById(R.id.et_email);
+        etPassword = findViewById(R.id.et_password);
+        //Text views
+        forgotPassword = findViewById(R.id.tv_forgotPassword);
+        tvAppName = findViewById(R.id.tv_appName);
+        //Buttons
+        loginWithoutSignUpButton = findViewById(R.id.bt_loginWithoutSignUp_loginScreen);
+        googleSignInButton = findViewById(R.id.sign_in_button);
+        loginButton = findViewById(R.id.loginButton);
+        //Image View
+        logoImageView = findViewById(R.id.iv_sapi);
+    }
+
+    private void initializeGoogleApi(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    private void settingListeners(){
+
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
+                signInWithGoogle();
+            }
+        });
+
+        loginWithoutSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
+                StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
+                finish();
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
+                checkIfFieldsAreEmpty();
+            }
+        });
+
+        forgotPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                etPassword.setVisibility(View.INVISIBLE);
+                googleSignInButton.setVisibility(View.INVISIBLE);
+                forgotPassword.setVisibility(View.INVISIBLE);
+                loginButton.setText("Send Email");
+                forgotPasswordField = true;
+                return false;
+            }
+        });
     }
 }

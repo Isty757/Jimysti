@@ -11,7 +11,13 @@
     <style name = "CustomToolBar" parent = "Theme.AppCompat.Light.NoActionBar">
         <item name = "android:background">@color/colorSapientia</item>
 
+
     </style>
+
+    <style name = "CustomToolBar2" parent = "Theme.AppCompat.Light.NoActionBar">
+    <item name = "android:background">@color/colorWhite</item>
+    </style>
+
 
 
 </resources>
