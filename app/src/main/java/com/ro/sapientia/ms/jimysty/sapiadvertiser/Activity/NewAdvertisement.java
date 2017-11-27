@@ -97,9 +97,9 @@ public class NewAdvertisement extends BasicActivity {
                     //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList , googleUser);
                     Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
                     myRef.child(title.getText().toString()).setValue(myAdvertisement);
-                    Log.d("AZAZ", googleUser.getFirstName());
+                   // Log.d("AZAZ", googleUser.getFirstName());
 
-                    Log.d("AZAZ", googleUser.getLastName());
+                   // Log.d("AZAZ", googleUser.getLastName());
 
                     myRef = database.getReference("Advertisements");
                     myRef.child(title.getText().toString()).setValue(myAdvertisement);

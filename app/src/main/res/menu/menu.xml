@@ -15,7 +15,7 @@
         android:id="@+id/item_add"
         android:icon="@drawable/add"
         android:orderInCategory="101"
-        android:title="@string/search_content"
+        android:title="@string/add_content"
         app:showAsAction="always">
 
     </item>
