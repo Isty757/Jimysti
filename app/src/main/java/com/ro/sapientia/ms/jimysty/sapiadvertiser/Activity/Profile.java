@@ -1,6 +1,8 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,8 +22,8 @@ public class Profile extends BasicActivity {
         super.onCreate(icicle);
         setContentView(R.layout.activity_profile);
 
-        Button logout = findViewById(R.id.bt_log_out);
-        logout.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton loguot = findViewById(R.id.fb_logout_profile);
+        loguot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
