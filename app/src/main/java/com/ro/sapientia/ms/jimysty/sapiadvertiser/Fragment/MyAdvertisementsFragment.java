@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
 
     private FirebaseUser currentFirebaseUser;
 
+    private String searchTitle = null;
 
     public MyAdvertisementsFragment() {
         // Required empty public constructor
@@ -157,6 +159,16 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
 
         return rootView;
     }
+    public void setSearchText(Bundle msg){
+        if (msg == null){
+            searchTitle = null;
+        }
+        else {
+            searchTitle = msg.getString("Search");
+        }
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
     private void dialogIfUserWantToLogin(){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -197,18 +209,33 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
 
         try {
             for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                String profilPicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
+                if ( searchTitle == null) {
+                    String profilPicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
 
-                String title = (String) messageSnapshot.child("title").getValue();
-                String description = (String) messageSnapshot.child("description").getValue();
+                    String title = (String) messageSnapshot.child("title").getValue();
+                    String description = (String) messageSnapshot.child("description").getValue();
 
-                ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
+                    ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
 
-                titleList.add(title);
-                descriptionList.add(description);
-                imagesList.add(images.get(0));
-                profilPictureList.add(profilPicture);
+                    titleList.add(title);
+                    descriptionList.add(description);
+                    imagesList.add(images.get(0));
+                    profilPictureList.add(profilPicture);
+                }
+                else{
+                    String profilPicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
 
+                    String title = (String) messageSnapshot.child("title").getValue();
+                    String description = (String) messageSnapshot.child("description").getValue();
+
+                    ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
+                    if (title.toLowerCase().contains(searchTitle.toLowerCase())) {
+                        titleList.add(title);
+                        descriptionList.add(description);
+                        imagesList.add(images.get(0));
+                        profilPictureList.add(profilPicture);
+                    }
+                }
             }
             adapter = new MyRecyclerViewAdapter(rootView.getContext(), profilPictureList, titleList, descriptionList, imagesList);
             adapter.setClickListener(MyAdvertisementsFragment.this);

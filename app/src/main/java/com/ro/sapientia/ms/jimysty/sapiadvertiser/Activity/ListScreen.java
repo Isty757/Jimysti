@@ -1,7 +1,10 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.nfc.Tag;
@@ -16,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 
@@ -53,10 +57,15 @@ public class ListScreen extends BasicActivity{
 
     private FirebaseUser currentFirebaseUser;
 
+    AdvertisementsFragment advertisementsFragment = new AdvertisementsFragment();
+    MyAdvertisementsFragment myAdvertisementsFragment = new MyAdvertisementsFragment();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertisement);
+
+        handleIntent(getIntent());
 
         Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -90,6 +99,24 @@ public class ListScreen extends BasicActivity{
             });
         }
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        Log.d(TAG, "Searching side by side22");
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //use the query to search your data somehow
+            Log.d(TAG, query);
+            Bundle sendSearchText = new Bundle();
+            sendSearchText.putString("Search",query);
+            advertisementsFragment.setSearchText(sendSearchText);
+            myAdvertisementsFragment.setSearchText(sendSearchText);
+        }
+    }
 
     private void loadGoogleProfilePicture(DataSnapshot messageSnapshot) {
         try {
@@ -114,8 +141,8 @@ public class ListScreen extends BasicActivity{
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AdvertisementsFragment(), "All Advertisement");
-        adapter.addFragment(new MyAdvertisementsFragment(), "My Advertisements");
+        adapter.addFragment(advertisementsFragment, "All Advertisement");
+        adapter.addFragment(myAdvertisementsFragment, "My Advertisements");
         viewPager.setAdapter(adapter);
     }
 
@@ -153,14 +180,28 @@ public class ListScreen extends BasicActivity{
         this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu,menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.item_action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        Log.d("SearchResult","itt van");
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                advertisementsFragment.setSearchText(null);
+                myAdvertisementsFragment.setSearchText(null);
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_action_search:
-                return true;
             case R.id.item_face:
                 if (currentFirebaseUser != null){
                     StaticMethods.goToProfile(ListScreen.this);

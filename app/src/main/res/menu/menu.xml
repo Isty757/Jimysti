@@ -8,23 +8,14 @@
         android:id="@+id/item_face"
         android:icon="@drawable/icon_menu_bar_img"
         android:orderInCategory="101"
-<<<<<<< HEAD
-        android:title="@string/add_content"
-        app:showAsAction="always">
-
-=======
         android:title="@string/face_content"
         app:showAsAction="ifRoom">
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed
     </item>
 
-    <item
-        android:id="@+id/item_action_search"
-        android:icon="@drawable/icon_search"
-        android:orderInCategory="100"
+    <item android:id="@+id/item_action_search"
         android:title="@string/search_content"
+        android:icon="@drawable/icon_search"
         app:showAsAction="always"
-        >
-    </item>
+        app:actionViewClass="android.widget.SearchView" />
 
 </menu>

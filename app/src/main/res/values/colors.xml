@@ -6,11 +6,6 @@
     <color name="colorSapientia">#006B3F</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
-<<<<<<< HEAD
-    <color name="colorGrey">#d4d0d0</color>
-    <color name="colorBGray">#8f8d8d</color>
-=======
     <color name="colorGrey">#767474</color>
 
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed
 </resources>

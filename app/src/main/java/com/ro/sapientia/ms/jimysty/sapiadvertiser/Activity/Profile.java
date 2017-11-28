@@ -1,10 +1,13 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
 
 import android.os.Bundle;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
 
 /**
  * Created by barth on 11/13/2017.
@@ -15,17 +18,24 @@ public class Profile extends BasicActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.profile);
+        setContentView(R.layout.activity_profile);
+
+        Button logout = findViewById(R.id.bt_log_out);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                StaticMethods.goToLoginScreenActivity(Profile.this);
+                finish();
+            }
+        });
     }
 
-    private void Edit(){
-        EditText etFirst_Name = findViewById(R.id.pr_first);
-        EditText etLast_Name = findViewById(R.id.pr_last);
-        EditText etEmail = findViewById(R.id.pr_email);
-        EditText etPhone_Number = findViewById(R.id.pr_phone);
-        EditText etPassword = findViewById(R.id.pr_password);
-        EditText etCondirm_Password = findViewById(R.id.pr_confirm_password);
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        StaticMethods.goToListAdvertisementsActivity(Profile.this);
+        finish();
 
-       // etFirst_Name.setBackground();
     }
 }

@@ -82,17 +82,10 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:paddingLeft="10dp"
-        android:editable="false"
-        android:background="@drawable/no_edit"
-        android:textColorHint="@color/colorBGray"
-=======
         android:paddingLeft="12dp"
         android:editable="false"
         android:background="@drawable/border_green_rectangle_white_background"
         android:textColorHint="@color/colorBlack"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         app:layout_constraintTop_toBottomOf="@id/ll_button"
         android:minHeight="30dp"
@@ -108,14 +101,8 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:editable="false"
-        android:background="@drawable/no_edit"
-        android:textColorHint="@color/colorBGray"
-=======
         android:background="@drawable/border_green_rectangle_white_background"
         android:textColorHint="@color/colorBlack"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -124,19 +111,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pr_email"
+        android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@+id/pr_last"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:editable="false"
-        android:background="@drawable/no_edit"
-        android:textColorHint="@color/colorBGray"
-=======
         android:background="@drawable/border_green_rectangle_white_background"
         android:textColorHint="@color/colorBlack"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -144,20 +126,15 @@
         android:id="@+id/pr_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:hint="@string/pr_phone_number"
         app:layout_constraintTop_toBottomOf="@id/pr_email"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:editable="false"
-        android:background="@drawable/no_edit"
-        android:textColorHint="@color/colorBGray"
-=======
         android:background="@drawable/border_green_rectangle_white_background"
         android:textColorHint="@color/colorBlack"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -166,19 +143,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pr_password"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/pr_phone"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:editable="false"
-        android:background="@drawable/no_edit"
-        android:textColorHint="@color/colorBGray"
-=======
         android:background="@drawable/border_green_rectangle_white_background"
         android:textColorHint="@color/colorBlack"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
@@ -187,19 +159,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pr_confirm_password"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/pr_password"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:paddingLeft="10dp"
-<<<<<<< HEAD:app/src/main/res/layout/profile.xml
-        android:editable="false"
-        android:background="@drawable/no_edit"
-=======
         android:background="@drawable/border_green_rectangle_white_background"
->>>>>>> 6a40c7a187ced543dc328c02870aacccf7baa8ed:app/src/main/res/layout/activity_profile.xml
         android:layout_marginTop="20dp"
-        android:textColorHint="@color/colorBGray"
-        android:textColor="@color/colorGrey"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
         android:minHeight="30dp"
         />
 
