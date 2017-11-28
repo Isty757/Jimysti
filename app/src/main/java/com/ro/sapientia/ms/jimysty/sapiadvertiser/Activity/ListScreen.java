@@ -75,6 +75,7 @@ public class ListScreen extends BasicActivity{
         setupViewPager(viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
+
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 

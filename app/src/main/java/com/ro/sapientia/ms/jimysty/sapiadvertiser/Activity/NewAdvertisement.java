@@ -63,6 +63,8 @@ public class NewAdvertisement extends BasicActivity {
     private ArrayList<String> imagesList = new ArrayList<>();
     private ArrayList<Uri> imageURIs = new ArrayList<>();
 
+    private static final String TAG = "NewAdvertisement";
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -119,6 +121,7 @@ public class NewAdvertisement extends BasicActivity {
 
 
                     Log.d("AZAZ2", "" + imageURIs.size());
+                    final int[] cnt = {0};
                     for (int i = 0; i < imageURIs.size(); i++) {
                         mStorageRef = FirebaseStorage.getInstance().getReference(title.getText().toString()+i);
                         mStorageRef.putFile(imageURIs.get(i))
@@ -130,19 +133,28 @@ public class NewAdvertisement extends BasicActivity {
                                         imagesList.add(downloadUrl.toString());
                                         Log.d("AZAZ2", "Itten igen pontoson");
                                         Toast.makeText(NewAdvertisement.this, "Rendben van", Toast.LENGTH_SHORT).show();
+                                        Advertisement myAdvertisement;
+                                        if( googleUser != null){
+                                             myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+                                        }
+                                        else {
+                                            googleUser = new User("","","","");
+                                            myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+                                        }
 
-                                        Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+
                                         //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
                                         myRef.child(title.getText().toString()).setValue(myAdvertisement);
-                                        Log.d("AZAZ", googleUser.getFirstName());
-
-                                        Log.d("AZAZ", googleUser.getLastName());
 
                                         myRef = database.getReference("Advertisements");
                                         myRef.child(title.getText().toString()).setValue(myAdvertisement);
 
-                                        NewAdvertisement.this.finish();
-                                        StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
+                                        if (cnt[0] == imageURIs.size()-1) {
+                                            NewAdvertisement.this.finish();
+                                            StaticMethods.goToListAdvertisementsActivity(NewAdvertisement.this);
+                                        }
+                                        Log.d(TAG, cnt[0]+"");
+                                        cnt[0]++;
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -206,8 +218,7 @@ public class NewAdvertisement extends BasicActivity {
 
                     //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
                     Bitmap bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri), 120, 120, false);
-                    Log.d("IZA",bitmap.toString());
-                    ImageItem imItem = new ImageItem(getScaledBitmap(bitmap,(float)0.5 ) , "Titulus");
+                    ImageItem imItem = new ImageItem(bitmap , "Titulus");
                     list.add(imItem);
 
                     gridView = findViewById(R.id.gridView);
@@ -242,7 +253,7 @@ public class NewAdvertisement extends BasicActivity {
                                 Bitmap bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri), 120, 120, false);
 
                                 //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                                ImageItem imItem = new ImageItem(getScaledBitmap(bitmap, (float) 0.5), "Titulus " + i);
+                                ImageItem imItem = new ImageItem(bitmap, "Titulus " + i);
                                 list.add(imItem);
                                 imageURIs.add(uri);
                             }

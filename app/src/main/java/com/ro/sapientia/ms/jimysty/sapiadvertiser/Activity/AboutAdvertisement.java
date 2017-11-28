@@ -30,6 +30,7 @@ import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.User;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.ViewPagerAdapter;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
@@ -123,6 +124,7 @@ public class AboutAdvertisement extends BasicActivity {
                         viewPager = findViewById(R.id.vp_images);
                         adapter = new ViewPagerAdapter(AboutAdvertisement.this, images);
                         viewPager.setAdapter(adapter);
+                        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
                         adapter.notifyDataSetChanged();
                     } catch (Exception e){
 
