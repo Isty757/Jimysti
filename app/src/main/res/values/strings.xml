@@ -6,7 +6,7 @@
     <string name="facebook_app_id">[APP_ID]</string>
     <string name="fb_login_protocol_scheme">fb[APP_ID]</string>
 
-    <string name="search_content">Search</string>
+    <string name="search_content">Sapi advertiser</string>
     <string name="add_content">Add</string>
     <string name="face_content">Profil</string>
     <string name="settings_name">Add</string>

@@ -39,7 +39,7 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
  * Created by Drako on 20-Nov-17.
  */
 
-public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener{
+public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener, MyRecyclerViewAdapter.LongItemClickListener{
 
     private static final String TAG = "AdvertisementsFragment";
 
@@ -59,6 +59,8 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
     protected LayoutManagerType mCurrentLayoutManagerType;
 
     private FirebaseUser currentFirebaseUser;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     public View rootView;
     public AdvertisementsFragment() {
@@ -93,8 +95,8 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
         // database references
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Advertisements");
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Advertisements");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,8 +115,8 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
             @Override
             public void onClick(View view) {
                 if (currentFirebaseUser != null){
-                    //StaticMethods.goToCreateNewAdvertisementActivity(getActivity());
-                    StaticMethods.goToProfile(getActivity());
+                    StaticMethods.goToCreateNewAdvertisementActivity(getActivity());
+                    //StaticMethods.goToProfile(getActivity());
                 } else{
                     dialogIfUserWantToLogin();
                 }
@@ -184,6 +186,7 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
         ArrayList<String> titleList = new ArrayList<>();
         ArrayList<String> descriptionList = new ArrayList<>();
         ArrayList<String> imagesList = new ArrayList<>();
+        ArrayList<String> id = new ArrayList<>();
 
         try {
             for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
@@ -192,6 +195,7 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
                     String profilPicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
                     String title = (String) messageSnapshot.child("title").getValue();
                     String description = (String) messageSnapshot.child("description").getValue();
+                    String sId = (String) messageSnapshot.child("id").getValue();
 
                     ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
 
@@ -199,6 +203,7 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
                     titleList.add(title);
                     descriptionList.add(description);
                     imagesList.add(images.get(0));
+                    id.add(sId);
                 }
                 else{
                     Log.d(TAG , searchTitle.toLowerCase());
@@ -206,6 +211,7 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
                     String title = (String) messageSnapshot.child("title").getValue();
 
                     String description = (String) messageSnapshot.child("description").getValue();
+                    String sId = (String) messageSnapshot.child("id").getValue();
 
                     ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
                     Log.d(TAG , title.toLowerCase());
@@ -215,11 +221,13 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
                         titleList.add(title);
                         descriptionList.add(description);
                         imagesList.add(images.get(0));
+                        id.add(sId);
                     }
                 }
             }
-            adapter = new MyRecyclerViewAdapter(rootView.getContext(), profilPictureList, titleList, descriptionList, imagesList);
+            adapter = new MyRecyclerViewAdapter(rootView.getContext(), profilPictureList, titleList, descriptionList, imagesList, id);
             adapter.setClickListener(AdvertisementsFragment.this);
+            adapter.setLongClickListener(AdvertisementsFragment.this);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
@@ -254,11 +262,23 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
     @Override
     public void onItemClick(View view, int position) {
         if (adapter.isClickable) {
+            Log.d("AboutAdvertisement2", adapter.getItem(position));
             adapter.isClickable = false;
             view.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.button_click_animation));
             getActivity().overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
             StaticMethods.goToTellAboutAdvertisementActivity(rootView.getContext(), adapter.getItem(position));
         }
+    }
+    @Override
+    public boolean onLongItemClick(View view, int position) {
+        Log.d("AboutAdvertisement2222", adapter.getItem(position));
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference(currentFirebaseUser.getUid()).child("BlackList");
+        myRef.setValue(adapter.getItem(position));
+
+        return true;
     }
 
     @Override

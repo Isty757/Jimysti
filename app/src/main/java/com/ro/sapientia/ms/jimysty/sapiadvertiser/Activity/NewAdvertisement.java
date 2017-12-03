@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -70,6 +71,14 @@ public class NewAdvertisement extends BasicActivity {
         super.onCreate(icicle);
         setContentView(R.layout.activity_new_advertisement);
 
+        ArrayList<ImageItem> list = new ArrayList<ImageItem>();
+        Bitmap icon = BitmapFactory.decodeResource(NewAdvertisement.this.getResources(), R.drawable.defaultgridview);
+        list.add(new ImageItem(icon,"Advertisement Title"));
+        list.add(new ImageItem(icon,"Advertisement Title"));
+        list.add(new ImageItem(icon,"Advertisement Title"));
+        gridView = findViewById(R.id.gridView);
+        gridAdapter = new GridViewAdapter(this, R.layout.item_grid_view, list );
+        gridView.setAdapter(gridAdapter);
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(NewAdvertisement.this);
         if (acct != null) {
@@ -112,6 +121,9 @@ public class NewAdvertisement extends BasicActivity {
                     Toast.makeText(NewAdvertisement.this,"Please fill all empty fields!", Toast.LENGTH_LONG).show();
                 }
                 else {
+
+                    myRef = database.getReference("Advertisements");
+                    final String key =  myRef.push().getKey();
                     myRef = database.getReference(currentFirebaseUser.getUid());
 
 
@@ -123,7 +135,7 @@ public class NewAdvertisement extends BasicActivity {
                     Log.d("AZAZ2", "" + imageURIs.size());
                     final int[] cnt = {0};
                     for (int i = 0; i < imageURIs.size(); i++) {
-                        mStorageRef = FirebaseStorage.getInstance().getReference(title.getText().toString()+i);
+                        mStorageRef = FirebaseStorage.getInstance().getReference(key + "/" +title.getText().toString()+i);
                         mStorageRef.putFile(imageURIs.get(i))
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -135,19 +147,25 @@ public class NewAdvertisement extends BasicActivity {
                                         Toast.makeText(NewAdvertisement.this, "Rendben van", Toast.LENGTH_SHORT).show();
                                         Advertisement myAdvertisement;
                                         if( googleUser != null){
-                                             myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+                                             myAdvertisement = new Advertisement(key,title.getText().toString(), description.getText().toString(), imagesList, googleUser);
                                         }
                                         else {
                                             googleUser = new User("","","","");
-                                            myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList, googleUser);
+                                            myAdvertisement = new Advertisement(key,title.getText().toString(), description.getText().toString(), imagesList, googleUser);
                                         }
 
 
                                         //Advertisement myAdvertisement = new Advertisement(title.getText().toString(), description.getText().toString(), imagesList);
-                                        myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                                        //myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                                        //TODO
+
+                                        myRef.child(key).setValue(myAdvertisement);
+
 
                                         myRef = database.getReference("Advertisements");
-                                        myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                                        //myRef.child(title.getText().toString()).setValue(myAdvertisement);
+                                        //TODO
+                                        myRef.child(key).setValue(myAdvertisement);
 
                                         if (cnt[0] == imageURIs.size()-1) {
                                             NewAdvertisement.this.finish();
@@ -273,30 +291,5 @@ public class NewAdvertisement extends BasicActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public Bitmap getScaledBitmap(Bitmap bitmap, float scale) {
-        Integer originalHeight = bitmap.getHeight();
-        Integer originalWidth = bitmap.getWidth();
-
-        Integer requiredHeight = Math.round(originalHeight * scale);
-        Integer requiredWidth = Math.round(originalWidth * scale);
-
-        return Bitmap.createScaledBitmap(bitmap, requiredWidth, requiredHeight, true);
-    }
-
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
     }
 }

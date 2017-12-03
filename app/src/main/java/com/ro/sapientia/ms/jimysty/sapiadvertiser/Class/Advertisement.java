@@ -8,25 +8,25 @@ import java.util.List;
 
 public class Advertisement {
 
+    private String id;
     private String title;
     private String description;
     private List<String> images;
     private User googleUser;
+
+    public Advertisement(String id , String title, String description, List<String> images, User googleUser) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.images = images;
+        this.googleUser = googleUser;
+    }
 
     public User getGoogleUser() {
         return googleUser;
     }
 
     public void setGoogleUser(User googleUser) {
-        this.googleUser = googleUser;
-    }
-
-
-
-    public Advertisement(String title, String description, List<String> images, User googleUser) {
-        this.title = title;
-        this.description = description;
-        this.images = images;
         this.googleUser = googleUser;
     }
 
@@ -60,5 +60,13 @@ public class Advertisement {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -114,8 +114,10 @@ public class ListScreen extends BasicActivity{
             Log.d(TAG, query);
             Bundle sendSearchText = new Bundle();
             sendSearchText.putString("Search",query);
-            advertisementsFragment.setSearchText(sendSearchText);
-            myAdvertisementsFragment.setSearchText(sendSearchText);
+            if ((advertisementsFragment != null) && (myAdvertisementsFragment != null)) {
+                advertisementsFragment.setSearchText(sendSearchText);
+                myAdvertisementsFragment.setSearchText(sendSearchText);
+            }
         }
     }
 
@@ -124,7 +126,7 @@ public class ListScreen extends BasicActivity{
             String profilePicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
 
             if (menu != null) {
-                final MenuItem item = menu.findItem(R.id.item_face);
+                final MenuItem item = menu.findItem(R.id.iv_profil_picture_img);
                 if (item != null) {
                     Glide.with(ListScreen.this).load(profilePicture).asBitmap().into(new SimpleTarget<Bitmap>(100, 100) {
                         @Override
@@ -191,8 +193,10 @@ public class ListScreen extends BasicActivity{
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                advertisementsFragment.setSearchText(null);
-                myAdvertisementsFragment.setSearchText(null);
+                if ((advertisementsFragment != null) && (myAdvertisementsFragment != null)){
+                    advertisementsFragment.setSearchText(null);
+                    myAdvertisementsFragment.setSearchText(null);
+                }
                 return false;
             }
         });

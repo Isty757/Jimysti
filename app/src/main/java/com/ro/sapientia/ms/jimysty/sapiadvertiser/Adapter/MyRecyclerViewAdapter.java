@@ -34,16 +34,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<String> mData = Collections.emptyList();
     private List<String> mDescription = Collections.emptyList();
     private List<String> mImages = Collections.emptyList();
+    private List<String> mId = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private LongItemClickListener mLongItemClickListener;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<String> profilPictures, List<String> title , List<String> description , List<String> images ) {
+    public MyRecyclerViewAdapter(Context context, List<String> profilPictures, List<String> title , List<String> description , List<String> images , List<String> id) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = title;
         this.mDescription = description;
         this.mImages = images;
         this.mProfilePictures = profilPictures;
+        this.mId = id;
     }
 
     // inflates the row layout from xml when needed
@@ -63,12 +66,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         String profilePicture = mProfilePictures.get(position);
         holder.myTextView.setText(animal);
         holder.myDescriptionView.setText(description);
+        if (profilePicture.matches("")){
+            profilePicture = "https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/profileplaceholder.jpg?alt=media&token=f59384c2-a18d-4858-b93d-325f00fddfad";
+        }
 
         Glide.with(mInflater.getContext()).load(profilePicture)
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.myProfilePictureImageView);
+
 
         Glide.with(mInflater.getContext()).load(image)
                 .thumbnail(0.5f)
@@ -85,7 +92,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private ImageView myProfilePictureImageView;
         private TextView myTextView;
         private TextView myDescriptionView;
@@ -98,17 +105,23 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             myImageView = itemView.findViewById(R.id.iv_advertisement_image);
             myProfilePictureImageView = itemView.findViewById(R.id.iv_profile_picture);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+        @Override
+        public boolean onLongClick(View view) {
+            if (mLongItemClickListener != null) mLongItemClickListener.onLongItemClick(view, getAdapterPosition());
+            return true;
+        }
     }
 
     // convenience method for getting data at click position
     public String getItem(int id) {
-        return mData.get(id);
+        return mId.get(id);
     }
     public String getDescription(int id){
         return mDescription.get(id);
@@ -118,9 +131,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+    public void setLongClickListener (LongItemClickListener longClickListener){
+        this.mLongItemClickListener = longClickListener;
+    }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+    public interface LongItemClickListener{
+        boolean onLongItemClick(View view, int position);
     }
 }

@@ -80,6 +80,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:weightSum="2"
         android:background="@drawable/border_green_rectangle_white_background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -91,14 +92,16 @@
             android:orientation="vertical"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/bt_callCreator"
             app:layout_constraintBottom_toBottomOf="parent">
             <ImageView
                 android:id="@+id/iv_profile"
-                android:src="@drawable/profileplaceholder"
+                android:src="@drawable/icon_list_profile_picture_img"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_gravity="center"
                 />
             <TextView
                 android:id="@+id/tv_profile_name_aboutAdvertisement"

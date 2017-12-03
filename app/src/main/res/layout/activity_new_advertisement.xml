@@ -23,7 +23,13 @@
             android:layout_height="match_parent"
             android:textColor="@color/colorBlack"
             android:layout_marginStart="7dp"
+            android:textSize="15sp"
             android:text="Add some Title"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSapientia"
+            />
         <EditText
             android:id="@+id/et_newTitle"
             android:layout_width="match_parent"
@@ -41,8 +47,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/colorBlack"
+            android:textSize="15sp"
             android:layout_marginStart="7dp"
             android:text="Add some Description about advertiesment"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSapientia"
+            />
         <EditText
             android:id="@+id/et_newDescription"
             android:layout_width="match_parent"

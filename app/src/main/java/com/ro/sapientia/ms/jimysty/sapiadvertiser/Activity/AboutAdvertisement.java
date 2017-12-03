@@ -74,6 +74,7 @@ public class AboutAdvertisement extends BasicActivity {
             }
         } else {
             newString= (String) savedInstanceState.getSerializable("ADVERTISEMENT");
+            Log.d("AboutAdvertisement", newString);
         }
 
         if (newString!= null){
