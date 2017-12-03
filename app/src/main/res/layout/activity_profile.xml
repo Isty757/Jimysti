@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="25dp"
@@ -69,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="25dp"
+                    android:src="@drawable/profile_logout"
 
                     />
             </LinearLayout>
@@ -86,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginEnd="20dp"
+                    android:src="@drawable/profile_edit"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -112,14 +115,14 @@
             android:layout_marginRight="50dp"
             android:paddingLeft="12dp"
             android:layout_marginTop="20dp"
-            android:editable="false"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             app:layout_constraintTop_toTopOf="parent"
             android:minHeight="30dp"
+            android:focusable="false"
 
-            />
+            tools:ignore="Deprecated" />
         <EditText
             android:id="@+id/pr_last"
             app:layout_constraintTop_toBottomOf="@+id/pr_first"
@@ -130,8 +133,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:paddingLeft="10dp"
+            android:focusable="false"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             android:minHeight="30dp"
             />
@@ -147,9 +151,10 @@
             android:layout_marginRight="50dp"
             android:paddingStart="10dp"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             android:minHeight="30dp"
+            android:focusable="false"
             />
         <EditText
             android:id="@+id/pr_phone"
@@ -162,8 +167,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:paddingStart="10dp"
+            android:focusable="false"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             android:minHeight="30dp"
             />
@@ -178,8 +184,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:paddingStart="10dp"
+            android:focusable="false"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             android:minHeight="30dp"
             />
@@ -194,8 +201,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:paddingStart="10dp"
+            android:focusable="false"
             android:background="@drawable/border_green_rectangle_white_background"
-            android:textColorHint="@color/colorBlack"
+            android:textColorHint="@color/colorGrey"
             android:textColor="@color/colorBlack"
             android:minHeight="30dp"
             />

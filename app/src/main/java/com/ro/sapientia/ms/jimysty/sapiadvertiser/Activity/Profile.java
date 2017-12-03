@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
@@ -23,6 +24,8 @@ public class Profile extends BasicActivity {
         setContentView(R.layout.activity_profile);
 
         FloatingActionButton loguot = findViewById(R.id.fb_logout_profile);
+        FloatingActionButton edit = findViewById(R.id.fb_edit_profile);
+
         loguot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,6 +34,26 @@ public class Profile extends BasicActivity {
                 finish();
             }
         });
+        final EditText first = (EditText) findViewById(R.id.pr_first);
+        final EditText last = (EditText) findViewById(R.id.pr_last);
+        final EditText email = (EditText) findViewById(R.id.pr_email);
+        final EditText phone = (EditText) findViewById(R.id.pr_phone);
+        final EditText passw = (EditText) findViewById(R.id.pr_password);
+        final EditText confirm = (EditText) findViewById(R.id.pr_confirm_password);
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                first.setFocusableInTouchMode(true);
+                last.setFocusableInTouchMode(true);
+                email.setFocusableInTouchMode(true);
+                phone.setFocusableInTouchMode(true);
+                passw.setFocusableInTouchMode(true);
+                confirm.setFocusableInTouchMode(true);
+            }
+        });
+
+
     }
 
     @Override
