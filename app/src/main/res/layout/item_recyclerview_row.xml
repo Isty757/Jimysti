@@ -30,15 +30,16 @@
         app:layout_constraintBottom_toTopOf="@id/iv_advertisement_image"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_list_profile_picture_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profileplaceholder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorSapientia"/>
 
         <LinearLayout
             android:layout_width="match_parent"

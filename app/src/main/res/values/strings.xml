@@ -21,4 +21,8 @@
     <string name="pr_confirm_password">Confirm password</string>
 
     <string name="search_hint">ex: "almás pite"</string>
+
+
+
+    <string name="login_screen_button_text">Login</string>
 </resources>

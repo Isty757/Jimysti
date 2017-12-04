@@ -21,6 +21,8 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * Created by Drako on 13-Nov-17.
@@ -93,7 +95,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private ImageView myProfilePictureImageView;
+        private CircleImageView myProfilePictureImageView;
         private TextView myTextView;
         private TextView myDescriptionView;
         private ImageView myImageView;

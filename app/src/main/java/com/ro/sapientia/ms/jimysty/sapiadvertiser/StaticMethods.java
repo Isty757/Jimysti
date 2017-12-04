@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.AboutAdvertisement;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.ListScreen;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.LoginSignUpScreen;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.NewAdvertisement;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity.Profile;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.AboutAdvertisement;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.ListScreen;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.LoginSignUpScreen;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.NewAdvertisement;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.Profile;
 
 /**
  * Created by Drako on 11-Nov-17.

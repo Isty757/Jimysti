@@ -12,12 +12,14 @@ public class User {
     private String lastName;
     private String mobileNumber;
     private String image;
+    private String email;
 
-    public User(String firstName, String lastName, String mobileNumber, String image) {
+    public User(String firstName, String lastName, String mobileNumber, String image , String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobileNumber = mobileNumber;
         this.image = image;
+        this.email = email;
     }
     public User(String firstName, String lastName, String mobileNumber) {
         this.firstName = firstName;
@@ -26,6 +28,13 @@ public class User {
 
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFirstName() {
         return firstName;

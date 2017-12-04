@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/sapiverzum"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.SplashScreen"
+        <activity android:name=".activity.SplashScreen"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -23,13 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.LoginSignUpScreen"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Activity.AboutAdvertisement"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Activity.NewAdvertisement"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Activity.ListScreen"
+        <activity android:name=".activity.LoginSignUpScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AboutAdvertisement"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NewAdvertisement"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ListScreen"
             android:screenOrientation="portrait"
             android:label="@string/search_content"
             android:launchMode="singleTop">
@@ -39,8 +39,8 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.Profile"
-            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.Profile"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

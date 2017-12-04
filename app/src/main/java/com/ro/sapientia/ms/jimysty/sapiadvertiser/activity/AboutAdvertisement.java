@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,23 +16,21 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.Manifest;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Class.User;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.ViewPagerAdapter;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Drako on 30-Oct-17.
@@ -40,19 +38,12 @@ import java.util.ArrayList;
 
 public class AboutAdvertisement extends BasicActivity {
 
+    private static final String TAG = "AboutAdvertisement";
+
     ViewPager viewPager;
     ViewPagerAdapter adapter;
 
-    private String[] images = {
-            "https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/hirdetes.jpg?alt=media&token=b6e4e6aa-b46d-4cbc-8aa1-a400a9c1b60b",
-            "https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/felveteli.jpg?alt=media&token=dd13af65-5abe-46ed-86a0-59ad58b60aa7",
-            "https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/sapi.jpg?alt=media&token=2b32d318-d4f3-443c-b5e7-d2f7b469013d"
-    };
-
     private final int REQUEST_CODE = 5;
-
-    FirebaseDatabase database;
-    DatabaseReference myRef;
 
     String phoneNumber = "0740000000";
 
@@ -60,9 +51,6 @@ public class AboutAdvertisement extends BasicActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_advertisement);
-
-        database = FirebaseDatabase.getInstance();
-
 
         String newString;
         if (savedInstanceState == null) {
@@ -74,7 +62,6 @@ public class AboutAdvertisement extends BasicActivity {
             }
         } else {
             newString= (String) savedInstanceState.getSerializable("ADVERTISEMENT");
-            Log.d("AboutAdvertisement", newString);
         }
 
         if (newString!= null){
@@ -93,29 +80,18 @@ public class AboutAdvertisement extends BasicActivity {
                         phoneNumber = (String) dataSnapshot.child("googleUser").child("mobileNumber").getValue();
 
                         TextView tvName = findViewById(R.id.tv_profile_name_aboutAdvertisement);
-                        ImageView ivProfilePicture = findViewById(R.id.iv_profile);
+                        CircleImageView ivProfilePicture = findViewById(R.id.iv_profile);
 
-                        //Uri myUri = Uri.parse(profilePicture);
-                        //ivProfilePicture.setImageURI(myUri);
+
                         String fullName = firstName + " " + lastName;
                         tvName.setText(fullName);
-
-                        Glide.with(getApplicationContext()).load(profilePicture)
-                                .thumbnail(0.5f)
-                                .crossFade()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(ivProfilePicture);
-                    /*
-                    for (DataSnapshot messageSnapshot: dataSnapshot.child("googleUser").getChildren()){
-                        String firstName = (String) messageSnapshot.child("firstName").getValue();
-                        String lastName = (String) messageSnapshot.child("lastName").getValue();
-                        phoneNumber = (String) messageSnapshot.child("mobileNumber").getValue();
-
-                        TextView tvName = findViewById(R.id.tv_profile_name_aboutAdvertisement);
-
-                        tvName.setText(firstName + " " + lastName);
-                    }
-*/
+                        if (ivProfilePicture != null){
+                            Glide.with(getApplicationContext()).load(profilePicture)
+                                    .thumbnail(0.5f)
+                                    .crossFade()
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(ivProfilePicture);
+                        }
                         TextView tvTitle = findViewById(R.id.tv_title_about_advertisement);
                         TextView tvDescription = findViewById(R.id.tv_description_about_advertisement);
 
@@ -128,7 +104,7 @@ public class AboutAdvertisement extends BasicActivity {
                         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
                         adapter.notifyDataSetChanged();
                     } catch (Exception e){
-
+                        Log.d(TAG,e.getMessage());
                     }
 
                 }
@@ -140,16 +116,14 @@ public class AboutAdvertisement extends BasicActivity {
             });
         }
 
-        //viewPager = findViewById(R.id.vp_images);
-        //adapter = new ViewPagerAdapter(AboutAdvertisement.this , images);
-        //viewPager.setAdapter(adapter);
-
         Button callCreator = findViewById(R.id.bt_callCreator);
 
         PhoneCallListener phoneListener = new PhoneCallListener();
         TelephonyManager telephonyManager = (TelephonyManager) this
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if (telephonyManager != null) {
+            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
 
         callCreator.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +142,6 @@ public class AboutAdvertisement extends BasicActivity {
                         }
                     }
                 }, 300);
-
             }
         });
     }
@@ -208,11 +181,12 @@ public class AboutAdvertisement extends BasicActivity {
                     Intent i = getBaseContext().getPackageManager()
                             .getLaunchIntentForPackage(
                                     getBaseContext().getPackageName());
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    if (i != null) {
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    }
                     startActivity(i);
                     isPhoneCalling = false;
                 }
-
             }
         }
     }

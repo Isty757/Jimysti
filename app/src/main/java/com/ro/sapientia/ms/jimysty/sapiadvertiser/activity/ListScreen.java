@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.activity;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,21 +19,12 @@ import android.view.MenuInflater;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Toast;
-
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.MyRecyclerViewAdapter;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Fragment.AdvertisementsFragment;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Fragment.MyAdvertisementsFragment;
@@ -55,8 +45,6 @@ public class ListScreen extends BasicActivity{
 
     private Menu menu;
 
-    private FirebaseUser currentFirebaseUser;
-
     AdvertisementsFragment advertisementsFragment = new AdvertisementsFragment();
     MyAdvertisementsFragment myAdvertisementsFragment = new MyAdvertisementsFragment();
 
@@ -75,14 +63,11 @@ public class ListScreen extends BasicActivity{
         setupViewPager(viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
-
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         if (currentFirebaseUser != null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference(currentFirebaseUser.getUid());
+            myRef = database.getReference(currentFirebaseUser.getUid());
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -91,7 +76,6 @@ public class ListScreen extends BasicActivity{
                         loadGoogleProfilePicture(messageSnapshot);
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
@@ -102,16 +86,12 @@ public class ListScreen extends BasicActivity{
     }
     @Override
     protected void onNewIntent(Intent intent) {
-
         handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
-        Log.d(TAG, "Searching side by side22");
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
-            Log.d(TAG, query);
             Bundle sendSearchText = new Bundle();
             sendSearchText.putString("Search",query);
             if ((advertisementsFragment != null) && (myAdvertisementsFragment != null)) {
@@ -123,8 +103,7 @@ public class ListScreen extends BasicActivity{
 
     private void loadGoogleProfilePicture(DataSnapshot messageSnapshot) {
         try {
-            String profilePicture = (String) messageSnapshot.child("googleUser").child("image").getValue();
-
+            String profilePicture = (String) messageSnapshot.child("image").getValue();
             if (menu != null) {
                 final MenuItem item = menu.findItem(R.id.iv_profil_picture_img);
                 if (item != null) {
@@ -187,8 +166,9 @@ public class ListScreen extends BasicActivity{
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.item_action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        Log.d("SearchResult","itt van");
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
 
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override

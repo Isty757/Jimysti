@@ -1,4 +1,4 @@
-package com.ro.sapientia.ms.jimysty.sapiadvertiser.Activity;
+package com.ro.sapientia.ms.jimysty.sapiadvertiser.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,8 +25,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.BasicActivity;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
@@ -40,29 +38,30 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
 
     private static final String TAG = "LoginSignUpScreen";
 
-    private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private final int RC_SIGN_IN = 11;
+
+    private static final int DELAY = 200;
 
     private boolean forgotPasswordField = false;
 
     private ImageView logoImageView;
+
     private EditText etEmail;
     private EditText etPassword;
+
     private TextView forgotPassword;
-    private Button loginWithoutSignUpButton;
-    private Button loginButton;
-    private SignInButton googleSignInButton;
     private TextView tvAppName;
 
-    private static final int DELAY = 200;
+    private Button loginWithoutSignUpButton;
+    private Button loginButton;
+
+    private SignInButton googleSignInButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-
-        mAuth = FirebaseAuth.getInstance();
 
         initializeViewWithControl();
 
@@ -73,13 +72,16 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         delayingItems();
     }
 
-
+    /**
+     * check if password or email fields are empty or not. If one of them is empty a Toast message will be shown
+     *
+     */
     private void checkIfFieldsAreEmpty(){
         if (forgotPasswordField){
             etPassword.setVisibility(View.VISIBLE);
             googleSignInButton.setVisibility(View.VISIBLE);
             forgotPassword.setVisibility(View.VISIBLE);
-            loginButton.setText("Login");
+            loginButton.setText(R.string.login_screen_button_text);
             forgotPasswordField = false;
             if (etEmail.getText().toString().matches("")){
                 Toast.makeText(LoginSignUpScreen.this, "E-mail field is empty!", Toast.LENGTH_SHORT).show();
@@ -101,10 +103,13 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         }
     }
 
-
-
+    /**
+     * check if email or password field are empty or not and
+     * check if password field contain minimum 6 character or not
+     * if everything is okay then we can sign in if we have an account
+     * if we don't have one then we have to create it
+     */
     private void login(){
-
         if (etEmail.getText().toString().matches("") || etPassword.getText().toString().matches("")){
             Toast.makeText(LoginSignUpScreen.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
         }
@@ -131,7 +136,9 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
             }
         }
     }
-
+    /**
+     * create user with email and password if it's not wrong
+     */
     private void createNewUser(){
         mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().trim(), etPassword.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -148,12 +155,20 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                 });
     }
 
+    /**
+     * sign in with google
+     */
     private void signInWithGoogle() {
-
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /**
+     * check if sign in result is okay or not
+     * @param requestCode is a code that we add it
+     * @param resultCode returns that result is success or not
+     * @param data returns data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -172,8 +187,11 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         }
     }
 
+    /**
+     * register our google account in firebase
+     * @param acct this is our google account
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -196,6 +214,9 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         Log.d(TAG , "onConnectionFailed:" + connectionResult);
     }
 
+    /**
+     * animate every buttons, textviews and logos
+     */
     private void delayingItems(){
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.splash_anim);
         logoImageView.startAnimation(animation);
@@ -243,6 +264,9 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         }, 6*DELAY);
     }
 
+    /**
+     * get all ID s from XML
+     */
     private void initializeViewWithControl(){
         //Edit Texts
         etEmail = findViewById(R.id.et_email);
@@ -257,7 +281,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         //Image View
         logoImageView = findViewById(R.id.iv_sapi);
     }
-
+    //initialize google API
     private void initializeGoogleApi(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -269,8 +293,10 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                 .build();
     }
 
+    /**
+     * set listeners
+     */
     private void settingListeners(){
-
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
