@@ -115,8 +115,8 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
             @Override
             public void onClick(View view) {
                 if (currentFirebaseUser != null){
-                    StaticMethods.goToCreateNewAdvertisementActivity(getActivity());
-                    //StaticMethods.goToProfile(getActivity());
+                    //StaticMethods.goToCreateNewAdvertisementActivity(getActivity());
+                    StaticMethods.goToProfile(getActivity());
                 } else{
                     dialogIfUserWantToLogin();
                 }
