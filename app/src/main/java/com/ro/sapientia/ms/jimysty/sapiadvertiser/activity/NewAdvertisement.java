@@ -82,10 +82,14 @@ public class NewAdvertisement extends BasicActivity {
             if (personPhoto != null) {
                 googleUser = new User(personGivenName, personFamilyName, "", personPhoto.toString(), personEmail);
             }
+
             myRef = database.getReference(currentFirebaseUser.getUid()).child("User").child("image");
             if (personPhoto != null) {
                 myRef.setValue(personPhoto.toString());
             }
+        }
+        else{
+            googleUser = new User("","","","","");
         }
         myRef = database.getReference(currentFirebaseUser.getUid()).child("User");
         myRef.addValueEventListener(new ValueEventListener() {

@@ -89,6 +89,7 @@ public class AboutAdvertisement extends BasicActivity {
                             Glide.with(getApplicationContext()).load(profilePicture)
                                     .thumbnail(0.5f)
                                     .crossFade()
+                                    .error(R.drawable.profileplaceholder)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(ivProfilePicture);
                         }

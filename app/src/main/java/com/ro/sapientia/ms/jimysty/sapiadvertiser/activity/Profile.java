@@ -63,8 +63,6 @@ public class Profile extends BasicActivity {
         last = findViewById(R.id.pr_last);
         email = findViewById(R.id.pr_email);
         phone = findViewById(R.id.pr_phone);
-        passw = findViewById(R.id.pr_password);
-        confirm = findViewById(R.id.pr_confirm_password);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +71,6 @@ public class Profile extends BasicActivity {
             last.setFocusableInTouchMode(clicked);
             email.setFocusableInTouchMode(clicked);
             phone.setFocusableInTouchMode(clicked);
-            passw.setFocusableInTouchMode(clicked);
-            confirm.setFocusableInTouchMode(clicked);
 
             clicked = !clicked;
 
@@ -141,6 +137,7 @@ public class Profile extends BasicActivity {
                         Glide.with(Profile.this).load(profilePictureString)
                                 .thumbnail(0.5f)
                                 .crossFade()
+                                .error(R.drawable.profileplaceholder)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(profilePicture);
                     }
