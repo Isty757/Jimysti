@@ -1,6 +1,7 @@
 package com.ro.sapientia.ms.jimysty.sapiadvertiser.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,9 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
 
     private Button loginWithoutSignUpButton;
     private Button loginButton;
+
+    private myTask mytask = new myTask();
+    private ProgressBar progressbar;
 
     private SignInButton googleSignInButton;
 
@@ -280,6 +285,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         loginButton = findViewById(R.id.loginButton);
         //Image View
         logoImageView = findViewById(R.id.iv_sapi);
+        //progress bar
+        progressbar = (ProgressBar) findViewById(R.id.progressBar);
     }
     //initialize google API
     private void initializeGoogleApi(){
@@ -300,6 +307,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mytask.execute();
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 signInWithGoogle();
             }
@@ -308,6 +316,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         loginWithoutSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mytask.execute();
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
                 finish();
@@ -317,6 +326,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mytask.execute();
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 checkIfFieldsAreEmpty();
             }
@@ -333,5 +343,42 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                 return false;
             }
         });
+    }
+
+
+    class myTask extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            progressbar.setProgress(0);
+            progressbar.setMax(100);
+            int progressbarstatus = 0;
+        };
+
+        @Override
+        protected String doInBackground(String... params) {
+            for (int i = 0; i < 20; i++) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                progressbar.incrementProgressBy(10);
+            }
+            return "completed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+
+            super.onProgressUpdate(values);
+        }
     }
 }
