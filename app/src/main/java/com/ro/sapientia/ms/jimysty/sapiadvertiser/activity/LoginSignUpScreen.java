@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +62,7 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
 
     private myTask mytask = new myTask();
     private ProgressBar progressbar;
+    private ConstraintLayout linearLayout;
 
     private SignInButton googleSignInButton;
 
@@ -117,12 +120,16 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
     private void login(){
         if (etEmail.getText().toString().matches("") || etPassword.getText().toString().matches("")){
             Toast.makeText(LoginSignUpScreen.this, "Fill E-mail and Password field!", Toast.LENGTH_SHORT).show();
+            progressbar.setVisibility(View.INVISIBLE);
+            linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         }
         else {
             if (etPassword.getText().toString().length() <= 5) {
                 Toast.makeText(LoginSignUpScreen.this, "Password must contain min 6 character", Toast.LENGTH_SHORT).show();
                 TextView forgotPassword = findViewById(R.id.tv_forgotPassword);
                 forgotPassword.setVisibility(View.VISIBLE);
+                progressbar.setVisibility(View.INVISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             } else {
                 mAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -155,6 +162,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                         } else {
                             Toast.makeText(LoginSignUpScreen.this, "Wrong email or password.", Toast.LENGTH_SHORT).show();
                             forgotPassword.setVisibility(View.VISIBLE);
+                            progressbar.setVisibility(View.INVISIBLE);
+                            linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                         }
                     }
                 });
@@ -186,6 +195,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
+                progressbar.setVisibility(View.INVISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 Toast.makeText(LoginSignUpScreen.this, "Sign in with Google Failed!", Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
             }
@@ -208,6 +219,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
                             LoginSignUpScreen.this.finish();
                         } else {
                             Toast.makeText(LoginSignUpScreen.this, "Authentication with Google failed.",Toast.LENGTH_SHORT).show();
+                            progressbar.setVisibility(View.INVISIBLE);
+                            linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                         }
                     }
                 });
@@ -286,7 +299,11 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         //Image View
         logoImageView = findViewById(R.id.iv_sapi);
         //progress bar
-        progressbar = (ProgressBar) findViewById(R.id.progressBar);
+        progressbar = (ProgressBar) findViewById(R.id.progressBar1);
+        mytask.execute();
+        progressbar.setVisibility(View.INVISIBLE);
+        linearLayout = findViewById(R.id.container);
+
     }
     //initialize google API
     private void initializeGoogleApi(){
@@ -307,7 +324,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mytask.execute();
+                progressbar.setVisibility(View.VISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 signInWithGoogle();
             }
@@ -316,9 +334,12 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         loginWithoutSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mytask.execute();
+                progressbar.setVisibility(View.VISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 StaticMethods.goToListAdvertisementsActivity(LoginSignUpScreen.this);
+                progressbar.setVisibility(View.INVISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 finish();
             }
         });
@@ -326,7 +347,8 @@ public class LoginSignUpScreen extends BasicActivity implements GoogleApiClient.
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mytask.execute();
+                progressbar.setVisibility(View.VISIBLE);
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                 view.startAnimation(AnimationUtils.loadAnimation(LoginSignUpScreen.this, R.anim.button_click_animation));
                 checkIfFieldsAreEmpty();
             }
