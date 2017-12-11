@@ -75,6 +75,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         Glide.with(mInflater.getContext()).load(profilePicture)
                 .thumbnail(0.5f)
                 .crossFade()
+                .error(R.drawable.profileplaceholder)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.myProfilePictureImageView);
 
@@ -82,6 +83,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         Glide.with(mInflater.getContext()).load(image)
                 .thumbnail(0.5f)
                 .crossFade()
+                .error(R.drawable.noimage)
                 .override(500,300)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.myImageView);

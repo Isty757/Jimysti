@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.MyRecyclerViewAdapter;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.ListScreen;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
     private static final String TAG = "MyAdvertisementsFrag";
 
     private static final int RESET_STATE_DELAY_MILLIS = 300;
+
+
 
     private MyRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
@@ -123,7 +126,7 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
             profilPictureList.add("");
             titleList.add("This will be you advertisement's title but before you have to...");
             descriptionList.add("And this will be you advertisement description but before you have to...");
-            imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/SignIn.jpg?alt=media&token=e4008fe5-aaa8-4a8f-8582-3cf8a71c303e");
+            imagesList.add("https://firebasestorage.googleapis.com/v0/b/sapiadvertiser-a59e8.appspot.com/o/SignIn.jpg?alt=media&token=5ca20486-0547-45c1-a93d-2de792528aa5");
             id.add("");
             adapter = new MyRecyclerViewAdapter(rootView.getContext(), profilPictureList, titleList, descriptionList, imagesList, id);
             adapter.setClickListener(MyAdvertisementsFragment.this);
@@ -192,6 +195,7 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
                     public void onClick(DialogInterface dialog,int id) {
                         // if this button is clicked, just close
                         // the dialog box and do nothing
+                        adapter.isClickable = true;
                         dialog.cancel();
                     }
                 });
@@ -281,31 +285,62 @@ public class MyAdvertisementsFragment extends Fragment implements MyRecyclerView
 
     @Override
     public void onItemClick(View view, int position) {
-        if (currentFirebaseUser != null) {
-            if (adapter.isClickable) {
-                adapter.isClickable = false;
-                view.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.button_click_animation));
-                StaticMethods.goToTellAboutAdvertisementActivity(rootView.getContext(), adapter.getItem(position));
+        if (adapter.isClickable) {
+            adapter.isClickable = false;
+            if (currentFirebaseUser != null) {
+                //if (adapter.isClickable) {
+                    //adapter.isClickable = false;
+                    view.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.button_click_animation));
+                    StaticMethods.goToTellAboutAdvertisementActivity(rootView.getContext(), adapter.getItem(position));
+                //}
             }
-        }
-        else{
-            view.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.button_click_animation));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dialogIfUserWantToLogin();
-                }
-            }, RESET_STATE_DELAY_MILLIS);
-
+            else {
+                view.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.button_click_animation));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogIfUserWantToLogin();
+                    }
+                }, RESET_STATE_DELAY_MILLIS);
+            }
         }
     }
     @Override
-    public boolean onLongItemClick(View view, int position) {
+    public boolean onLongItemClick(View view, final int position) {
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(currentFirebaseUser.getUid()).child("BlackList");
-        myRef.setValue(adapter.getItem(position));
-
+        if (currentFirebaseUser != null) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+            // set title
+            alertDialogBuilder.setTitle("Delete Advertisement");
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Are you sure you want to delete this advertisement?")
+                    .setCancelable(false)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, close
+                            // current activity
+                            database = FirebaseDatabase.getInstance();
+                            database.getReference(currentFirebaseUser.getUid()).child(adapter.getItem(position)).removeValue();
+                            database.getReference("Advertisements").child(adapter.getItem(position)).removeValue();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.detach(MyAdvertisementsFragment.this).attach(MyAdvertisementsFragment.this).commit();
+                        }
+                    })
+                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            adapter.isClickable = true;
+                            dialog.cancel();
+                        }
+                    });
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
+        }
         return true;
     }
 

@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.Adapter.MyRecyclerViewAdapter;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.R;
 import com.ro.sapientia.ms.jimysty.sapiadvertiser.StaticMethods;
+import com.ro.sapientia.ms.jimysty.sapiadvertiser.activity.ListScreen;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,10 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener, MyRecyclerViewAdapter.LongItemClickListener{
 
     private static final String TAG = "AdvertisementsFragment";
+
+    private boolean blackListWasDownloaded = false;
+
+    private ArrayList<String> blackList = new ArrayList<>();
 
     private MyRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
@@ -133,6 +138,33 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        if (currentFirebaseUser != null) {
+            myRef = database.getReference(currentFirebaseUser.getUid()).child("BlackList");
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ArrayList<String> downloadedBlackList = (ArrayList<String>) dataSnapshot.getValue();
+                    if (downloadedBlackList != null) {
+                        blackList = downloadedBlackList;
+                        if (!blackListWasDownloaded) {
+                            blackListWasDownloaded = true;
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.detach(AdvertisementsFragment.this).attach(AdvertisementsFragment.this).commit();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+        }
+
         return rootView;
     }
     public void setSearchText(Bundle msg){
@@ -195,11 +227,36 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
 
                     ArrayList<String> images = (ArrayList<String>) messageSnapshot.child("images").getValue();
 
+
+                    Log.d("ADVFRAGMENT", blackList.size() + "");
+                    if (blackList.size() != 0) {
+                        Log.d("ADVFRAGMENT", blackList.size() + "");
+                        if (!blackList.contains(sId)) {
+                            Log.d("ADVFRAGMENT", sId);
+                            profilPictureList.add(profilPicture);
+                            titleList.add(title);
+                            descriptionList.add(description);
+                            imagesList.add(images.get(0));
+                            id.add(sId);
+                        } else {
+                            Log.d("ADVFRAGMENT", "Ide is jott" + sId);
+                        }
+                    }
+                    else{
+                        Log.d("ADVFRAGMENT", "Itt van");
+                        profilPictureList.add(profilPicture);
+                        titleList.add(title);
+                        descriptionList.add(description);
+                        imagesList.add(images.get(0));
+                        id.add(sId);
+                    }
+                    /*
                     profilPictureList.add(profilPicture);
                     titleList.add(title);
                     descriptionList.add(description);
                     imagesList.add(images.get(0));
                     id.add(sId);
+                    */
                 }
                 else{
                     Log.d(TAG , searchTitle.toLowerCase());
@@ -266,13 +323,21 @@ public class AdvertisementsFragment extends Fragment implements MyRecyclerViewAd
         }
     }
     @Override
-    public boolean onLongItemClick(View view, int position) {
+    public boolean onLongItemClick(View view, final int position) {
         Log.d("AboutAdvertisement2222", adapter.getItem(position));
 
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(currentFirebaseUser.getUid()).child("BlackList");
-        myRef.setValue(adapter.getItem(position));
+        if (currentFirebaseUser != null) {
+            database = FirebaseDatabase.getInstance();
+            database.getReference(currentFirebaseUser.getUid()).child("BlackList").setValue(blackList);
+
+            myRef = database.getReference(currentFirebaseUser.getUid()).child("BlackList");
+            blackList.add(adapter.getItem(position));
+            myRef.setValue(blackList);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(AdvertisementsFragment.this).attach(AdvertisementsFragment.this).commit();
+        }
 
         return true;
     }
