@@ -59,6 +59,11 @@ public class NewAdvertisement extends BasicActivity {
 
     private int cnt = 0;
 
+    /**
+     * read data from textboxes and create a new advertisement
+     * upload that advertisement to firebase
+     * @param icicle
+     */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -210,6 +215,12 @@ public class NewAdvertisement extends BasicActivity {
         overridePendingTransition(R.anim.zoom_in,R.anim.zoom_out);
     }
 
+    /**
+     * after we selected an image or images this function give us a list of this pictures
+     * @param requestCode what we gave it before
+     * @param resultCode what the result is
+     * @param data what we get from that intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

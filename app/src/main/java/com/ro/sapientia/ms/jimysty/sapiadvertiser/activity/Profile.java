@@ -43,6 +43,11 @@ public class Profile extends BasicActivity {
 
     private CircleImageView profilePicture;
 
+    /**
+     * load the current users data to edit boxes
+     * the user can modify this data
+     * @param icicle
+     */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -159,6 +164,12 @@ public class Profile extends BasicActivity {
         finish();
     }
 
+    /**
+     * get the selected picture
+     * @param requestCode
+     * @param resultCode
+     * @param imageReturnedIntent
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);

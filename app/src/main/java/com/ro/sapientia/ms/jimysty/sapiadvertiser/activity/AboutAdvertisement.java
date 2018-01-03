@@ -52,6 +52,7 @@ public class AboutAdvertisement extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_advertisement);
 
+        //check if saved instance is null or not and initialize newString variable with it
         String newString;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -64,6 +65,7 @@ public class AboutAdvertisement extends BasicActivity {
             newString= (String) savedInstanceState.getSerializable("ADVERTISEMENT");
         }
 
+        //if newString not null then set a value event listener to get data from firebase
         if (newString!= null){
             myRef = database.getReference("Advertisements").child(newString);
             myRef.addValueEventListener(new ValueEventListener() {
@@ -147,7 +149,9 @@ public class AboutAdvertisement extends BasicActivity {
         });
     }
 
-    //monitor phone call activities
+    /**
+     * monitor phone call activities
+     */
     private class PhoneCallListener extends PhoneStateListener {
 
         private boolean isPhoneCalling = false;

@@ -20,6 +20,10 @@ public class BasicActivity extends AppCompatActivity {
     protected FirebaseDatabase database;
     protected DatabaseReference myRef;
 
+    /**
+     * initialize firebase variables and set the status bar translucent
+     * @param icicle
+     */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);

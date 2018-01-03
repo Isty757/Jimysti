@@ -54,8 +54,8 @@ public class ListScreen extends BasicActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertisement);
 
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.wood);
-        mp.start();
+        //final MediaPlayer mp = MediaPlayer.create(this, R.raw.wood);
+        //mp.start();
 
         handleIntent(getIntent());
 
@@ -93,6 +93,10 @@ public class ListScreen extends BasicActivity{
         handleIntent(intent);
     }
 
+    /**
+     * handle the search box text and give it to the fragment
+     * @param intent current intent
+     */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -105,6 +109,10 @@ public class ListScreen extends BasicActivity{
         }
     }
 
+    /**
+     * load the current google users profile picture
+     * @param messageSnapshot is an url of that image
+     */
     private void loadGoogleProfilePicture(DataSnapshot messageSnapshot) {
         try {
             String profilePicture = (String) messageSnapshot.child("image").getValue();
@@ -125,6 +133,10 @@ public class ListScreen extends BasicActivity{
         }
     }
 
+    /**
+     * add two fragment to view pager
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(advertisementsFragment, "All Advertisement");
@@ -161,6 +173,11 @@ public class ListScreen extends BasicActivity{
         }
     }
 
+    /**
+     * create the menu bar, search bar
+     * @param menu
+     * @return the created menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
@@ -188,6 +205,11 @@ public class ListScreen extends BasicActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * handle if we tapped one of the menu items
+     * @param item
+     * @return the tapped item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -206,6 +228,10 @@ public class ListScreen extends BasicActivity{
         }
     }
 
+    /**
+     * if a user isn't logged in and he want to modify her profile a dialog
+     * showes up
+     */
     public void dialogIfUserWantToLogin(){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ListScreen.this);
